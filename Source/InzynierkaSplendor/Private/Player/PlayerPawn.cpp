@@ -29,7 +29,7 @@ void APlayerPawn::Tick(float DeltaTime)
 void APlayerPawn::ChangePosition(FVector newLocationVector)
 {
 	
-	AddActorWorldOffset(newLocationVector);
+	AddActorWorldOffset(newLocationVector * cameraSpeed);
 }
 void APlayerPawn::SetupCamera()
 {

@@ -35,5 +35,7 @@ private:
 	USpringArmComponent* cameraOffset = nullptr;
 	APlayerController* playerController = nullptr;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+		float cameraSpeed = 5.0f;
 
 };

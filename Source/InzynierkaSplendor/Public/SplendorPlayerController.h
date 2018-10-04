@@ -21,7 +21,13 @@ private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	void InitializeInputs();
-	APlayerPawn* playerPawnRef = nullptr;
 	void MovePawn();
 	FVector GetCameraPanDirection();
+
+	float margin = 15.0f;
+	APlayerPawn* playerPawnRef = nullptr;
+	int32 screenSizeX;
+	int32 screenSizeY;
+
+
 };

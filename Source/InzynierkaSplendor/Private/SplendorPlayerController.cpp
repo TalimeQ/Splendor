@@ -14,6 +14,7 @@ void ASplendorPlayerController::BeginPlay()
 	this->bEnableMouseOverEvents = true;
 	// Gets upgradedPlayerPawnRef for future use;
 	playerPawnRef = Cast<APlayerPawn>(this->GetPawn());
+	this->GetViewportSize(screenSizeX, screenSizeY);
 	InitializeInputs();
 }
 
@@ -31,6 +32,7 @@ void ASplendorPlayerController::InitializeInputs()
 void ASplendorPlayerController::MovePawn()
 {
 	FVector cameraDirVector = GetCameraPanDirection();
+	if (cameraDirVector == FVector(0, 0, 0)) return;
 	playerPawnRef->ChangePosition(cameraDirVector);
 
 }
@@ -42,9 +44,21 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 	float CameraDirY = 0;
 
 	GetMousePosition(mouseX, mouseY);
-	if (mouseX == 0)
+	if (mouseX <= margin)
 	{
 		CameraDirY = -1;
+	}
+	if (mouseY <= margin)
+	{
+		CameraDirX = 1;
+	}
+	if (mouseX >= screenSizeX - margin)
+	{
+		CameraDirY = 1;
+	}
+	if (mouseY >= screenSizeY - margin)
+	{
+		CameraDirX = -1;
 	}
 	return  FVector(CameraDirX, CameraDirY, 0);
 }
