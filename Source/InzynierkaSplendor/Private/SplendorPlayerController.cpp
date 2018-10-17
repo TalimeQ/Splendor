@@ -5,8 +5,6 @@
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
-//TODO :: Wstawic Super do konstruktora
-
 
 void ASplendorPlayerController::BeginPlay()
 {
@@ -18,10 +16,6 @@ void ASplendorPlayerController::BeginPlay()
 	this->GetViewportSize(screenSizeX, screenSizeY);
 	SetupInputComponent();
 	EnableInput(this);
-	//AutoPossesPlayer = EAutoReceiveInput::Player0;
-	
-	InitInputSystem();
-
 }
 
 void ASplendorPlayerController::Tick(float DeltaTime)
@@ -36,7 +30,6 @@ void ASplendorPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	InputComponent->BindAction("Left", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnLeftClick);
 	InputComponent->BindAction("Right", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnRightClick);
-	InputComponent->BindAction("Karol", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnKarol);
 	
 }
 void ASplendorPlayerController::MovePawn()
@@ -79,8 +72,4 @@ void ASplendorPlayerController::OnLeftClick()
 void ASplendorPlayerController::OnRightClick()
 {
 	UE_LOG(LogTemp, Verbose, TEXT("Right mouse button clicked"));
-}
-void ASplendorPlayerController::OnKarol()
-{
-	UE_LOG(LogTemp, Verbose, TEXT("On Karol"));
 }

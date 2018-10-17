@@ -23,14 +23,13 @@ private:
 
 	void MovePawn();
 	FVector GetCameraPanDirection();
-
+	// Todo :: Make it inspector editable
 	float margin = 15.0f;
 	APlayerPawn* playerPawnRef = nullptr;
 	int32 screenSizeX;
 	int32 screenSizeY;
 	void OnLeftClick();
 	void OnRightClick();
-	void OnKarol();
 
 	virtual void SetupInputComponent() override;
 };
