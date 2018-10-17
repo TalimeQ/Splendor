@@ -5,17 +5,23 @@
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
+//TODO :: Wstawic Super do konstruktora
+
+
 void ASplendorPlayerController::BeginPlay()
 {
-	
-	// chcemy pokazywac nasz kursor
+	Super::BeginPlay();
 	this->bShowMouseCursor = true;
-	//
 	this->bEnableMouseOverEvents = true;
-	// Gets upgradedPlayerPawnRef for future use;
+	this->bEnableClickEvents = true;
 	playerPawnRef = Cast<APlayerPawn>(this->GetPawn());
 	this->GetViewportSize(screenSizeX, screenSizeY);
-	InitializeInputs();
+	SetupInputComponent();
+	EnableInput(this);
+	//AutoPossesPlayer = EAutoReceiveInput::Player0;
+	
+	InitInputSystem();
+
 }
 
 void ASplendorPlayerController::Tick(float DeltaTime)
@@ -24,9 +30,13 @@ void ASplendorPlayerController::Tick(float DeltaTime)
 	MovePawn();
 }
 
-// Used mostly  to bind controlls to inputs from player.
-void ASplendorPlayerController::InitializeInputs()
+
+void ASplendorPlayerController::SetupInputComponent()
 {
+	Super::SetupInputComponent();
+	InputComponent->BindAction("Left", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnLeftClick);
+	InputComponent->BindAction("Right", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnRightClick);
+	InputComponent->BindAction("Karol", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnKarol);
 	
 }
 void ASplendorPlayerController::MovePawn()
@@ -61,4 +71,16 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 		CameraDirX = -1;
 	}
 	return  FVector(CameraDirX, CameraDirY, 0);
+}
+void ASplendorPlayerController::OnLeftClick()
+{
+	UE_LOG(LogTemp, Verbose, TEXT("Left mouse button clicked"));
+}
+void ASplendorPlayerController::OnRightClick()
+{
+	UE_LOG(LogTemp, Verbose, TEXT("Right mouse button clicked"));
+}
+void ASplendorPlayerController::OnKarol()
+{
+	UE_LOG(LogTemp, Verbose, TEXT("On Karol"));
 }
