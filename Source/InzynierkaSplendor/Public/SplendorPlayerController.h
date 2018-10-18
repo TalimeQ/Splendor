@@ -28,8 +28,14 @@ private:
 	APlayerPawn* playerPawnRef = nullptr;
 	int32 screenSizeX;
 	int32 screenSizeY;
+public:
+
+protected:
+	virtual void SetupInputComponent() override;
+	UFUNCTION(BlueprintCallable)
 	void OnLeftClick();
+	UFUNCTION(BlueprintCallable)
 	void OnRightClick();
 
-	virtual void SetupInputComponent() override;
+	
 };

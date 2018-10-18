@@ -3,12 +3,14 @@
 #include "Public/Player/PlayerPawn.h"
 #include "Engine/Classes/Camera/CameraComponent.h"
 #include "Engine/Classes/GameFramework/PlayerController.h"
+#include "Public/SplendorPlayerController.h"
 #include "Classes/GameFramework/SpringArmComponent.h"
 
 
 // Sets default values
 APlayerPawn::APlayerPawn()
 {
+	
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SetupCamera();
@@ -17,6 +19,7 @@ APlayerPawn::APlayerPawn()
 // Called when the game starts or when spawned
 void APlayerPawn::BeginPlay()
 {
+	Super::BeginPlay();
 	playerController = Cast<APlayerController>(this->GetController());
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -47,5 +50,4 @@ void APlayerPawn::SetupCamera()
 
 	playerCamera->SetupAttachment(cameraOffset, USpringArmComponent::SocketName);
 }
-
 
