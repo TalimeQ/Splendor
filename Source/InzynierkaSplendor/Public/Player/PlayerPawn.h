@@ -9,6 +9,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class APlayerController;
+class URaycastHandler;
 
 UCLASS()
 class INZYNIERKASPLENDOR_API APlayerPawn : public APawn
@@ -26,7 +27,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
+	void InitializeRaycast(FVector mousePos, FVector mouseDir);
 
 private:
 
@@ -34,6 +35,7 @@ private:
 	UCameraComponent* playerCamera = nullptr;
 	USpringArmComponent* cameraOffset = nullptr;
 	APlayerController* playerController = nullptr;
+	URaycastHandler* raycastHandler = nullptr;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 		float cameraSpeed = 5.0f;

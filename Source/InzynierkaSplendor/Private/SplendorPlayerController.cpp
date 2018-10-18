@@ -9,16 +9,10 @@
 void ASplendorPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	this->bShowMouseCursor = true;
-	//this->bEnableMouseOverEvents = true;
-	//this->bEnableClickEvents = true;
-	PrimaryActorTick.bCanEverTick = true;
-	playerPawnRef = Cast<APlayerPawn>(this->GetPawn());
-	this->GetViewportSize(screenSizeX, screenSizeY);
+	InitializeEdgePanningParameters();
+
 	SetupInputComponent();
-	EnableInput(this);
-	InputEnabled();
-	UE_LOG(LogTemp, Warning, TEXT("Executed"));
+
 }
 
 void ASplendorPlayerController::Tick(float DeltaTime)
@@ -30,6 +24,15 @@ void ASplendorPlayerController::Tick(float DeltaTime)
 }
 
 
+void  ASplendorPlayerController::InitializeEdgePanningParameters()
+{
+	this->bShowMouseCursor = true;
+	this->bEnableMouseOverEvents = true;
+	this->bEnableClickEvents = true;
+	PrimaryActorTick.bCanEverTick = true;
+	playerPawnRef = Cast<APlayerPawn>(this->GetPawn());
+	this->GetViewportSize(screenSizeX, screenSizeY);
+}
 void ASplendorPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -37,7 +40,8 @@ void ASplendorPlayerController::SetupInputComponent()
 	
 	InputComponent->BindAction("Left", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnLeftClick);
 	InputComponent->BindAction("Right", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnRightClick);
-
+	EnableInput(this);
+	InputEnabled();
 	
 }
 void ASplendorPlayerController::MovePawn()
@@ -75,9 +79,17 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 }
 void ASplendorPlayerController::OnLeftClick()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Left mouse button clicked"));
+	// This will do actions
+	
+	if (!playerPawnRef) return;
+	FVector mouseLocation;
+	FVector mouseDir;
+	DeprojectMousePositionToWorld(mouseLocation,mouseDir);
+;
+	playerPawnRef->InitializeRaycast(mouseLocation,mouseDir);
 }
 void ASplendorPlayerController::OnRightClick()
 {
+	// This will cancel actions
 	UE_LOG(LogTemp, Warning, TEXT("Right mouse button clicked"));
 }

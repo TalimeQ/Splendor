@@ -4,13 +4,14 @@
 #include "Engine/Classes/Camera/CameraComponent.h"
 #include "Engine/Classes/GameFramework/PlayerController.h"
 #include "Public/SplendorPlayerController.h"
+#include "Public/Components/RaycastHandler.h"
 #include "Classes/GameFramework/SpringArmComponent.h"
 
 
 // Sets default values
 APlayerPawn::APlayerPawn()
 {
-	
+	raycastHandler = CreateDefaultSubobject<URaycastHandler>(TEXT("Raycast Handling Component"));
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SetupCamera();
@@ -22,6 +23,7 @@ void APlayerPawn::BeginPlay()
 	Super::BeginPlay();
 	playerController = Cast<APlayerController>(this->GetController());
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 // Called every frame
@@ -51,3 +53,8 @@ void APlayerPawn::SetupCamera()
 	playerCamera->SetupAttachment(cameraOffset, USpringArmComponent::SocketName);
 }
 
+void APlayerPawn::InitializeRaycast(FVector mousePos, FVector mouseDir)
+{
+	if (!raycastHandler) return;
+	raycastHandler->Raycast(mousePos,mouseDir);
+}

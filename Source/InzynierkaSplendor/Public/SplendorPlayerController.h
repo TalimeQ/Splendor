@@ -22,6 +22,7 @@ private:
 	virtual void Tick(float DeltaTime) override;
 
 	void MovePawn();
+	void InitializeEdgePanningParameters();
 	FVector GetCameraPanDirection();
 	// Todo :: Make it inspector editable
 	float margin = 15.0f;

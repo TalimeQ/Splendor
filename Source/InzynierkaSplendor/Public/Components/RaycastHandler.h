@@ -24,10 +24,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	APlayerPawn* playerPawn;
+	void Raycast(FVector mousePos, FVector mouseDir);
+	
 
 private:
 	void InitializePawn();
-	
+	APlayerPawn* playerPawn;
 };
