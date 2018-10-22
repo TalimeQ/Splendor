@@ -11,7 +11,6 @@ void ASplendorPlayerController::BeginPlay()
 	Super::BeginPlay();
 	InitializeEdgePanningParameters();
 
-	SetupInputComponent();
 
 }
 
@@ -38,11 +37,11 @@ void ASplendorPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	check(InputComponent);
 	
-	InputComponent->BindAction("Left", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnLeftClick);
+	InputComponent->BindAction("Left", EInputEvent::IE_Released, this, &ASplendorPlayerController::OnLeftClick);
 	InputComponent->BindAction("Right", EInputEvent::IE_Pressed, this, &ASplendorPlayerController::OnRightClick);
 	EnableInput(this);
 	InputEnabled();
-	
+	bIsInputEnabled = true;
 }
 void ASplendorPlayerController::MovePawn()
 {
@@ -92,4 +91,19 @@ void ASplendorPlayerController::OnRightClick()
 {
 	// This will cancel actions
 	UE_LOG(LogTemp, Warning, TEXT("Right mouse button clicked"));
+}
+void ASplendorPlayerController::ToggleInput()
+{
+	if(bIsInputEnabled)
+	{
+		this->DisableInput(this);
+		bIsInputEnabled = false;
+	}
+	else
+	{
+		this->EnableInput(this);
+		bIsInputEnabled = true;
+	}
+	
+	
 }

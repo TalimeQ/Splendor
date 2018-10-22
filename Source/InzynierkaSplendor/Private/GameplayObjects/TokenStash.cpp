@@ -1,7 +1,8 @@
 
 
 #include "Public/GameplayObjects/TokenStash.h"
-
+#include "Public/SplendorPlayerController.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
 
 ATokenStash::ATokenStash()
 {
@@ -16,7 +17,15 @@ ATokenStash::ATokenStash()
 
 void ATokenStash::OnRaycast()
 {
+	// TODO :: make networked version, this works in single atm ;)
+	ASplendorPlayerController* splendorCont = Cast<ASplendorPlayerController>(this->GetWorld()->GetFirstPlayerController());
+	if (splendorCont)
+	{
+		splendorCont->ToggleInput();
+	}
 	OnTokenRequest.Broadcast();
+	UE_LOG(LogTemp,Warning,TEXT("Raycast kinda clicked"))
+		
 }
 void ATokenStash::BeginPlay()
 {

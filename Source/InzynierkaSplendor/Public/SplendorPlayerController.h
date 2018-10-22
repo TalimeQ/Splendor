@@ -20,7 +20,7 @@ class INZYNIERKASPLENDOR_API ASplendorPlayerController : public APlayerControlle
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-
+	bool bIsInputEnabled = true;
 	void MovePawn();
 	void InitializeEdgePanningParameters();
 	FVector GetCameraPanDirection();
@@ -30,13 +30,14 @@ private:
 	int32 screenSizeX;
 	int32 screenSizeY;
 public:
-
+	UFUNCTION(BlueprintCallable)
+	void ToggleInput();
 protected:
 	virtual void SetupInputComponent() override;
 	UFUNCTION(BlueprintCallable)
 	void OnLeftClick();
 	UFUNCTION(BlueprintCallable)
 	void OnRightClick();
-
+	
 	
 };
