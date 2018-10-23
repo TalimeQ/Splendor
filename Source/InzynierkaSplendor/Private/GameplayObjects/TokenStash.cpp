@@ -68,3 +68,7 @@ void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens)
 	tokenPool - tokensBeingTaken; 
 	UE_LOG(LogTemp,Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "),tokenPool.rubyTokens,tokenPool.diamondTokens,tokenPool.emeraldTokens,tokenPool.sapphireTokens,tokenPool.onyxTokens)
 }
+bool ATokenStash::CheckIfTokensAvailable(int tokenNumber, int checkedAmount)
+{
+	return false;
+}
