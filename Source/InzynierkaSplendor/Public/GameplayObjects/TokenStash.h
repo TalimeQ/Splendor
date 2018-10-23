@@ -132,6 +132,9 @@ public:
 
 	ATokenStash();
 	virtual void OnRaycast() override;
+	UFUNCTION(BlueprintCallable, Category = "Tokens")
+	void ProcessTokenRequest(TArray<int> requestedTokens);
+
 
 	UPROPERTY(BlueprintAssignable)
 		FOnTokenRequest OnTokenRequest;

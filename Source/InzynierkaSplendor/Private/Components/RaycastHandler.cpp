@@ -57,7 +57,7 @@ void URaycastHandler::Raycast(FVector mousePos, FVector mouseDir)
 	// Just for debugs :)
 	DrawDebugLine(GetWorld(), mousePos, endVector, FColor::Orange, false, 35.0f, 0, 5.0f);
 	// to prevent from crashing
-	ensure(!worldRef);
+	//ensure(!worldRef);
 		worldRef->LineTraceSingleByChannel(traceHitResult,mousePos,endVector,ECollisionChannel::ECC_GameTraceChannel18);
 		AActor* actorHit = traceHitResult.GetActor(); // Tbh its debug purposes only
 		if (!actorHit) return; // there certainly is and will be a possibility of not hitting anything :)

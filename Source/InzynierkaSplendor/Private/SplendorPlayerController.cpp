@@ -91,6 +91,7 @@ void ASplendorPlayerController::OnRightClick()
 {
 	// This will cancel actions
 	UE_LOG(LogTemp, Warning, TEXT("Right mouse button clicked"));
+
 }
 void ASplendorPlayerController::ToggleInput()
 {

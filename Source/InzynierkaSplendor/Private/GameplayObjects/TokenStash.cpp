@@ -24,11 +24,47 @@ void ATokenStash::OnRaycast()
 		splendorCont->ToggleInput();
 	}
 	OnTokenRequest.Broadcast();
-	UE_LOG(LogTemp,Warning,TEXT("Raycast kinda clicked"))
 		
 }
 void ATokenStash::BeginPlay()
 {
 	Super::BeginPlay();
 
+}
+void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens)
+{
+	FTokenStruct tokensBeingTaken = FTokenStruct();
+	
+	uint8 lenght = requestedTokens.Num();
+	//UE_LOG(LogtTemp,Warning,("Number of items in array %d"),)
+	for(int i = 0; i < lenght; i ++)
+	{
+		switch (requestedTokens[i])
+		{
+			//
+		case 0:
+			tokensBeingTaken.rubyTokens += 1;
+			break;
+		case 1:
+			tokensBeingTaken.emeraldTokens += 1;
+			break;
+		case 2:
+			tokensBeingTaken.diamondTokens += 1;
+			break;
+		case 3:
+			tokensBeingTaken.onyxTokens += 1;
+			break;
+		case 4:
+			tokensBeingTaken.sapphireTokens += 1;
+			break;
+		case 5: 
+			tokensBeingTaken.goldTokens += 1;
+			break;
+		default:
+			UE_LOG(LogTemp, Warning, TEXT("TokenStash :: Unknown token operation"));
+			break;
+		}
+	}
+	tokenPool - tokensBeingTaken; 
+	UE_LOG(LogTemp,Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "),tokenPool.rubyTokens,tokenPool.diamondTokens,tokenPool.emeraldTokens,tokenPool.sapphireTokens,tokenPool.onyxTokens)
 }
