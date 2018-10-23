@@ -31,10 +31,11 @@ void ATokenStash::BeginPlay()
 	Super::BeginPlay();
 
 }
-void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens)
+void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlayerController* playerContRef)
 {
 	FTokenStruct tokensBeingTaken = FTokenStruct();
-	
+	if (!playerContRef) return;
+
 	uint8 lenght = requestedTokens.Num();
 	//UE_LOG(LogtTemp,Warning,("Number of items in array %d"),)
 	for(int i = 0; i < lenght; i ++)
@@ -66,9 +67,37 @@ void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens)
 		}
 	}
 	tokenPool - tokensBeingTaken; 
-	UE_LOG(LogTemp,Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "),tokenPool.rubyTokens,tokenPool.diamondTokens,tokenPool.emeraldTokens,tokenPool.sapphireTokens,tokenPool.onyxTokens)
+	playerContRef->AddTokens(tokensBeingTaken);
+	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool.rubyTokens, tokenPool.diamondTokens, tokenPool.emeraldTokens, tokenPool.sapphireTokens, tokenPool.onyxTokens)
+		
+
 }
 bool ATokenStash::CheckIfTokensAvailable(int tokenNumber, int checkedAmount)
 {
-	return false;
+	bool bIsAvailable = true;
+	switch (tokenNumber)
+	{
+	case 0:
+		if (tokenPool.rubyTokens < checkedAmount) bIsAvailable = false;
+		break;
+	case 1:
+		if (tokenPool.emeraldTokens < checkedAmount) bIsAvailable = false;
+		break;
+	case 2:
+		if (tokenPool.diamondTokens < checkedAmount) bIsAvailable = false;
+		break;
+	case 3:
+		if (tokenPool.onyxTokens< checkedAmount) bIsAvailable = false;
+		break;
+	case 4:
+		if (tokenPool.sapphireTokens < checkedAmount) bIsAvailable = false;
+		break;
+	case 5:
+		if (tokenPool.goldTokens < checkedAmount) bIsAvailable = false;
+		break;
+	default:
+		UE_LOG(LogTemp,Warning,TEXT("Check if available :: unknown token"))
+		break;
+	}
+	return bIsAvailable;
 }

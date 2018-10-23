@@ -133,7 +133,7 @@ public:
 	ATokenStash();
 	virtual void OnRaycast() override;
 	UFUNCTION(BlueprintCallable, Category = "Tokens")
-	void ProcessTokenRequest(TArray<int> requestedTokens);
+	void ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlayerController* playerContRef);
 	/* Checks if token can be taken in amount of 2 or not
 	@param int tokenNumber
 	-> 0 ruby

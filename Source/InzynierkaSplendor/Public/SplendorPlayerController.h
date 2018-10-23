@@ -4,6 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+/*
+TODO:
+Przeniesc Ustructa w normalne miejsce. Robi sie balagan z klasami.
+*/
+#include "Public/GameplayObjects/TokenStash.h"
 #include "SplendorPlayerController.generated.h"
 
 
@@ -32,6 +37,7 @@ private:
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInput();
+	void AddTokens(FTokenStruct tokensToAdd);
 protected:
 	virtual void SetupInputComponent() override;
 	UFUNCTION(BlueprintCallable)

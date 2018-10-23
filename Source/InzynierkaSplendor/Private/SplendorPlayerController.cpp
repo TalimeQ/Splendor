@@ -2,6 +2,7 @@
 
 #include "Public/SplendorPlayerController.h"
 #include "Public/Player/PlayerPawn.h"
+#include "Public/Player/SplendorPlayerState.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
@@ -107,4 +108,17 @@ void ASplendorPlayerController::ToggleInput()
 	}
 	
 	
+}
+void ASplendorPlayerController::AddTokens(FTokenStruct tokensToAdd)
+{
+	ASplendorPlayerState* playerStateRef = Cast<ASplendorPlayerState>( this->PlayerState);
+	if (playerStateRef)
+	{
+		FTokenStruct playerOwnedTokens = playerStateRef->GetPlayerTokens();
+		playerOwnedTokens + tokensToAdd;
+		playerStateRef->SetPlayerTokens(playerOwnedTokens);
+		playerOwnedTokens = playerStateRef->GetPlayerTokens();
+		UE_LOG(LogTemp,Warning,TEXT("PlayerStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "),playerOwnedTokens.rubyTokens,
+			playerOwnedTokens.diamondTokens,playerOwnedTokens.emeraldTokens,playerOwnedTokens.sapphireTokens,playerOwnedTokens.onyxTokens)
+	}
 }
