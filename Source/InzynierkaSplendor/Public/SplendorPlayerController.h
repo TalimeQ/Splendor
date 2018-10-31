@@ -8,7 +8,7 @@
 TODO:
 Przeniesc Ustructa w normalne miejsce. Robi sie balagan z klasami.
 */
-#include "Public/GameplayObjects/TokenStash.h"
+#include "Public/GameplayObjects/TokenStruct.h"
 #include "SplendorPlayerController.generated.h"
 
 

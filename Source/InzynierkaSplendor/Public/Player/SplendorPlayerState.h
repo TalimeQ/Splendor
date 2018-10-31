@@ -8,10 +8,7 @@ add references to cards that have been bought ;)
 
 */
 #include "CoreMinimal.h"
-/*
-TODO: Struct refactor point
-*/
-#include "Public/GameplayObjects/TokenStash.h"
+#include "Public/GameplayObjects/TokenStruct.h"
 #include "GameFramework/PlayerState.h"
 #include "SplendorPlayerState.generated.h"
 

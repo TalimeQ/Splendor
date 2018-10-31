@@ -1,9 +1,6 @@
 
 
 #include "SplendorPlayerState.h"
-/*
-TODO: Struct refactor point
-*/
 #include "Public/GameplayObjects/TokenStash.h"
 
 ASplendorPlayerState::ASplendorPlayerState()
