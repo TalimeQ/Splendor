@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameplayObjects/Interactable.h"
-#include "GameplayObjects/TokenStruct.h"
 #include "TokenStash.generated.h"
 
+
+struct FTokenStruct;
 
 /**
 *
@@ -18,7 +19,7 @@ class INZYNIERKASPLENDOR_API ATokenStash : public AInteractable
 {
 	GENERATED_BODY()
 private:
-	FTokenStruct tokenPool;
+	FTokenStruct *tokenPool = nullptr;
 	virtual void BeginPlay() override;
 public:
 

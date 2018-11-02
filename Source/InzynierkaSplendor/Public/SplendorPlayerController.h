@@ -5,15 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 /*
-TODO:
-Przeniesc Ustructa w normalne miejsce. Robi sie balagan z klasami.
+Refactoring
 */
-#include "Public/GameplayObjects/TokenStruct.h"
+
 #include "SplendorPlayerController.generated.h"
 
 
 class APlayerPawn;
-
+struct FTokenStruct;
 
 /**	
  * 
@@ -28,6 +27,8 @@ private:
 	bool bIsInputEnabled = true;
 	void MovePawn();
 	void InitializeEdgePanningParameters();
+	void StartRaycasting();
+
 	FVector GetCameraPanDirection();
 	// Todo :: Make it inspector editable
 	float margin = 15.0f;

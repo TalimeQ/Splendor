@@ -1,18 +1,21 @@
 
 
 #include "Public/GameplayObjects/TokenStash.h"
+#include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/SplendorPlayerController.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
 ATokenStash::ATokenStash()
 {
-	/* Should be changed based on amount of players
+	/*
+	TODO ::
+	Should be changed based on amount of players
 	2 player -> 4 gems of each
 	3 player -> 5 gems of each
 	4 player -> 7 gems of each
-	
+
 	*/
-	tokenPool = FTokenStruct(7, 5);
+	tokenPool = new FTokenStruct(7, 5);
 }
 
 void ATokenStash::OnRaycast()
@@ -29,46 +32,54 @@ void ATokenStash::OnRaycast()
 void ATokenStash::BeginPlay()
 {
 	Super::BeginPlay();
-
+	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool->rubyTokens, tokenPool->diamondTokens, tokenPool->emeraldTokens, tokenPool->sapphireTokens, tokenPool->onyxTokens)
 }
+
+
 void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlayerController* playerContRef)
 {
 	FTokenStruct tokensBeingTaken = FTokenStruct();
 	if (!playerContRef) return;
 
 	uint8 lenght = requestedTokens.Num();
-	//UE_LOG(LogtTemp,Warning,("Number of items in array %d"),)
 	for(int i = 0; i < lenght; i ++)
 	{
 		switch (requestedTokens[i])
 		{
-			//
 		case 0:
 			tokensBeingTaken.rubyTokens += 1;
+			tokensBeingTaken.tokensTotal++;
 			break;
 		case 1:
 			tokensBeingTaken.emeraldTokens += 1;
+			tokensBeingTaken.tokensTotal++;
 			break;
 		case 2:
 			tokensBeingTaken.diamondTokens += 1;
+			tokensBeingTaken.tokensTotal++;
 			break;
 		case 3:
 			tokensBeingTaken.onyxTokens += 1;
+			tokensBeingTaken.tokensTotal++;
 			break;
 		case 4:
 			tokensBeingTaken.sapphireTokens += 1;
+			tokensBeingTaken.tokensTotal++;
 			break;
 		case 5: 
 			tokensBeingTaken.goldTokens += 1;
+			tokensBeingTaken.tokensTotal++;
 			break;
 		default:
 			UE_LOG(LogTemp, Warning, TEXT("TokenStash :: Unknown token operation"));
 			break;
 		}
+		
 	}
-	tokenPool - tokensBeingTaken; 
+	tokenPool->setParams(*tokenPool - tokensBeingTaken); 
 	playerContRef->AddTokens(tokensBeingTaken);
-	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool.rubyTokens, tokenPool.diamondTokens, tokenPool.emeraldTokens, tokenPool.sapphireTokens, tokenPool.onyxTokens)
+	// TODO :: Remove LOG after interface implementation :)
+	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool->rubyTokens, tokenPool->diamondTokens, tokenPool->emeraldTokens, tokenPool->sapphireTokens, tokenPool->onyxTokens)
 		
 
 }
@@ -78,22 +89,22 @@ bool ATokenStash::CheckIfTokensAvailable(int tokenNumber, int checkedAmount)
 	switch (tokenNumber)
 	{
 	case 0:
-		if (tokenPool.rubyTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool->rubyTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 1:
-		if (tokenPool.emeraldTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool->emeraldTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 2:
-		if (tokenPool.diamondTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool->diamondTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 3:
-		if (tokenPool.onyxTokens< checkedAmount) bIsAvailable = false;
+		if (tokenPool->onyxTokens< checkedAmount) bIsAvailable = false;
 		break;
 	case 4:
-		if (tokenPool.sapphireTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool->sapphireTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 5:
-		if (tokenPool.goldTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool->goldTokens < checkedAmount) bIsAvailable = false;
 		break;
 	default:
 		UE_LOG(LogTemp,Warning,TEXT("Check if available :: unknown token"))

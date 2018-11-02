@@ -3,6 +3,7 @@
 #include "Public/SplendorPlayerController.h"
 #include "Public/Player/PlayerPawn.h"
 #include "Public/Player/SplendorPlayerState.h"
+#include "Public/GameplayObjects/TokenStruct.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
@@ -79,18 +80,12 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 }
 void ASplendorPlayerController::OnLeftClick()
 {
-	// This will do actions
-	
-	if (!playerPawnRef) return;
-	FVector mouseLocation;
-	FVector mouseDir;
-	DeprojectMousePositionToWorld(mouseLocation,mouseDir);
-;
-	playerPawnRef->InitializeRaycast(mouseLocation,mouseDir);
+	StartRaycasting();
 }
 void ASplendorPlayerController::OnRightClick()
 {
 	// This will cancel actions
+	// TODO :: Implement :)
 	UE_LOG(LogTemp, Warning, TEXT("Right mouse button clicked"));
 
 }
@@ -117,8 +112,18 @@ void ASplendorPlayerController::AddTokens(FTokenStruct tokensToAdd)
 		FTokenStruct playerOwnedTokens = playerStateRef->GetPlayerTokens();
 		playerOwnedTokens + tokensToAdd;
 		playerStateRef->SetPlayerTokens(playerOwnedTokens);
+		// This is just for debug purposes :) TODO :: When the interface will be implemented, remove this.
 		playerOwnedTokens = playerStateRef->GetPlayerTokens();
-		UE_LOG(LogTemp,Warning,TEXT("PlayerStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "),playerOwnedTokens.rubyTokens,
-			playerOwnedTokens.diamondTokens,playerOwnedTokens.emeraldTokens,playerOwnedTokens.sapphireTokens,playerOwnedTokens.onyxTokens)
+		UE_LOG(LogTemp, Warning, TEXT("Final player Token State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), playerOwnedTokens.rubyTokens, playerOwnedTokens.diamondTokens, playerOwnedTokens.emeraldTokens, playerOwnedTokens.sapphireTokens, playerOwnedTokens.onyxTokens)
 	}
+}
+void ASplendorPlayerController::StartRaycasting()
+{
+	if (!playerPawnRef) return;
+	FVector mouseLocation;
+	FVector mouseDir;
+	// Deprojecting the mouse so we can extract the raycast start point.
+	DeprojectMousePositionToWorld(mouseLocation, mouseDir);
+	// The pawn handles raycasts, we just provide intent.
+	playerPawnRef->InitializeRaycast(mouseLocation, mouseDir);
 }

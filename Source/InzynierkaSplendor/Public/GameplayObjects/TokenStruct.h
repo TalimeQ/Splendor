@@ -23,6 +23,17 @@ USTRUCT() struct FTokenStruct {
 
 
 	// Properties should always be initialized from what i hear 
+	void setParams(FTokenStruct tokensToSet)
+	{
+		this->emeraldTokens = tokensToSet.emeraldTokens;
+		this->rubyTokens = tokensToSet.rubyTokens;
+		this->onyxTokens = tokensToSet.onyxTokens;
+		this->sapphireTokens = tokensToSet.sapphireTokens;
+		this->goldTokens = tokensToSet.goldTokens;
+		this->diamondTokens = tokensToSet.diamondTokens;
+		this->tokensTotal = tokensToSet.tokensTotal;
+
+	}
 	FTokenStruct()
 	{
 		emeraldTokens = 0;
@@ -56,6 +67,7 @@ USTRUCT() struct FTokenStruct {
 
 		return *this;
 	}
+
 	FTokenStruct operator -(FTokenStruct &deducted)
 	{
 		this->diamondTokens = this->diamondTokens - deducted.diamondTokens;
