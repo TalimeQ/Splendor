@@ -3,23 +3,23 @@
 
 #include "TokenStruct.generated.h"
 
-USTRUCT() struct FTokenStruct {
-	GENERATED_BODY()
-		UPROPERTY()
+USTRUCT(BlueprintType) struct FTokenStruct {
+	GENERATED_USTRUCT_BODY()
+		UPROPERTY(BlueprintReadWrite,EditAnywhere,Category = "Emeralds")
 		int emeraldTokens;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Rubies")
 		int rubyTokens;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere,Category = "Onyxes")
 		int onyxTokens;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Sapphires")
 		int sapphireTokens;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Diamonds")
 		int diamondTokens;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Gold")
 		int goldTokens;
 
-	UPROPERTY()
-		int tokensTotal;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Total")
+		int tokensTotal =  emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
 
 
 	// Properties should always be initialized from what i hear 
