@@ -4,4 +4,7 @@
 
 
 
-
+void ACardStack::OnRaycast()
+{
+	OnCardStackRequest.Broadcast();
+}

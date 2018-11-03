@@ -55,7 +55,7 @@ void URaycastHandler::Raycast(FVector mousePos, FVector mouseDir)
 	FHitResult traceHitResult;
 
 	// Just for debugs :)
-	DrawDebugLine(GetWorld(), mousePos, endVector, FColor::Orange, false, 5.0f, 0, 5.0f);
+	// DrawDebugLine(GetWorld(), mousePos, endVector, FColor::Orange, false, 5.0f, 0, 5.0f);
 	// to prevent from crashing
 	//ensure(!worldRef);
 		worldRef->LineTraceSingleByChannel(traceHitResult,mousePos,endVector,ECollisionChannel::ECC_GameTraceChannel18);
