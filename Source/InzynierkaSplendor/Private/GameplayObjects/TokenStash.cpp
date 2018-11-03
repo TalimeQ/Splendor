@@ -32,7 +32,7 @@ void ATokenStash::OnRaycast()
 void ATokenStash::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool->rubyTokens, tokenPool->diamondTokens, tokenPool->emeraldTokens, tokenPool->sapphireTokens, tokenPool->onyxTokens)
+	
 }
 
 
