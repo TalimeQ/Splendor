@@ -127,3 +127,15 @@ void ASplendorPlayerController::StartRaycasting()
 	// The pawn handles raycasts, we just provide intent.
 	playerPawnRef->InitializeRaycast(mouseLocation, mouseDir);
 }
+bool ASplendorPlayerController::CheckIfCanReserve()
+{
+	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
+	if (!playerState) return false;
+	if (playerState->ReturnNumberOfCards() >= 3) return false;
+	else return true;
+}
+void ASplendorPlayerController::ForceInput()
+{
+	this->EnableInput(this);
+	bIsInputEnabled = true;
+}

@@ -76,6 +76,11 @@ void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlay
 		}
 		
 	}
+	if (tokensBeingTaken.goldTokens == 1 && tokenPool->goldTokens <= 0)
+	{
+		
+		return;
+	}
 	tokenPool->setParams(*tokenPool - tokensBeingTaken); 
 	playerContRef->AddTokens(tokensBeingTaken);
 	// TODO :: Remove LOG after interface implementation :)

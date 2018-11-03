@@ -38,7 +38,10 @@ private:
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInput();
+	UFUNCTION(BlueprintCallable)
+	void ForceInput();
 	void AddTokens(FTokenStruct tokensToAdd);
+	bool CheckIfCanReserve();
 protected:
 	virtual void SetupInputComponent() override;
 	UFUNCTION(BlueprintCallable)
