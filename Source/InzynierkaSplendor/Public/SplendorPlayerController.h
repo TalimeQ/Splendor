@@ -42,6 +42,8 @@ public:
 	void ForceInput();
 	void AddTokens(FTokenStruct tokensToAdd);
 	bool CheckIfCanReserve();
+	bool CheckBudget(FTokenStruct comparedAmount);
+	void BuyCard(FTokenStruct cardBonus, int prestige);
 protected:
 	virtual void SetupInputComponent() override;
 	UFUNCTION(BlueprintCallable)

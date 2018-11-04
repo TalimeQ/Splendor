@@ -19,7 +19,7 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 		int goldTokens;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Total")
-		int tokensTotal =  emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
+		int tokensTotal;
 
 
 	// Properties should always be initialized from what i hear 
@@ -86,38 +86,74 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 		if (tokensTotal != compared.tokensTotal)
 		{
 			isSame = false;
-			return isSame;
+			
 		}
 		else if (onyxTokens != compared.onyxTokens)
 		{
 			isSame = false;
-			return isSame;
+		
 		}
 		else if (rubyTokens != compared.rubyTokens)
 		{
 			isSame = false;
-			return isSame;
+			
 		}
 		else if (emeraldTokens != compared.emeraldTokens)
 		{
 			isSame = false;
-			return isSame;
+			
 		}
 		if (sapphireTokens != compared.sapphireTokens)
 		{
 			isSame = false;
-			return isSame;
+		
 		}
 		if (diamondTokens != compared.diamondTokens)
 		{
 			isSame = false;
-			return isSame;
+			
 		}
 		if (goldTokens != compared.goldTokens)
 		{
 			isSame = false;
-			return isSame;
+			
 		}
 		return isSame;
+	}
+	/* Overloaded just to check if cards are purchasable
+	*/
+	bool operator <=(FTokenStruct &compared)
+	{
+		bool compResult = true;
+		if (emeraldTokens > compared.emeraldTokens)
+		{
+			compResult = false;
+		}
+		if (goldTokens > compared.goldTokens)
+		{
+			compResult = false;
+		}
+		if (sapphireTokens > compared.sapphireTokens)
+		{
+			compResult = false;
+		}
+		if (rubyTokens > compared.rubyTokens)
+		{
+			compResult = false;
+		}
+		if (onyxTokens > compared.onyxTokens)
+		{
+			compResult = false;
+		}
+		if (diamondTokens > compared.diamondTokens)
+		{
+			compResult = false;
+		}
+		return compResult;
+	}
+	int Count()
+	{
+		int tokensTotal = emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
+		return tokensTotal;
 	}
 };

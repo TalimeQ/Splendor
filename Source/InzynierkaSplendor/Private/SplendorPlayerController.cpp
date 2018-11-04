@@ -139,3 +139,22 @@ void ASplendorPlayerController::ForceInput()
 	this->EnableInput(this);
 	bIsInputEnabled = true;
 }
+bool ASplendorPlayerController::CheckBudget(FTokenStruct comparedAmount)
+{
+	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
+	if (!playerState) return false;
+	FTokenStruct playerBudget = playerState->GetPlayerBudget();
+	// Note to self, atm cards are initialized as empty. This is not a bug, but a kinda protection.
+	return comparedAmount <= playerBudget;
+}
+void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus, int prestige)
+{
+	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
+	if (!playerState) return;
+	int oldPrestige = playerState->GetPlayerPrestige();
+	playerState->SetPlayerPrestige(oldPrestige + prestige);
+
+	FTokenStruct oldBonus = playerState->GetPlayerBonuses();
+	FTokenStruct newBonus = oldBonus + cardBonus;
+	playerState->SetPlayerBonus(newBonus);
+}

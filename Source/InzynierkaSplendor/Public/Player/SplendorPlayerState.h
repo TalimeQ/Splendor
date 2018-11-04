@@ -23,6 +23,8 @@ class INZYNIERKASPLENDOR_API ASplendorPlayerState : public APlayerState
 private:
 		TArray<FCardStruct*>  reservedCards;
 		FTokenStruct *playerTokens = nullptr;
+		FTokenStruct *playerBonuses = nullptr;
+		int prestige;
 public:
 	ASplendorPlayerState();
 	FTokenStruct GetPlayerTokens();
@@ -30,4 +32,10 @@ public:
 	int ReturnNumberOfCards();
 	void ReserveCard(FCardStruct cardValues);
 	void BuyReservedCard(int cardIndex);
+	void SetPlayerBonus(FTokenStruct newBonus);
+	FTokenStruct GetPlayerBudget();
+	FTokenStruct GetPlayerBonuses();
+	int GetPlayerPrestige();
+	void SetPlayerPrestige(int newPrestige);
+
 };

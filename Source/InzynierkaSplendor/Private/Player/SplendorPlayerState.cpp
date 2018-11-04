@@ -9,6 +9,7 @@
 ASplendorPlayerState::ASplendorPlayerState()
 {
 	playerTokens = new FTokenStruct();
+	playerBonuses = new FTokenStruct();
 }
 FTokenStruct ASplendorPlayerState::GetPlayerTokens()
 {
@@ -37,4 +38,26 @@ void ASplendorPlayerState::ReserveCard(FCardStruct CardValues)
 void ASplendorPlayerState::BuyReservedCard(int cardIndex)
 {
 	//theoretical implementation soon :) after i get my game interface.....
+}
+void ASplendorPlayerState::SetPlayerPrestige(int newPrestige)
+{
+	prestige = newPrestige;
+}
+int ASplendorPlayerState::GetPlayerPrestige()
+{
+	return prestige;
+}
+FTokenStruct ASplendorPlayerState::GetPlayerBonuses()
+{
+	return *playerBonuses;
+}
+FTokenStruct ASplendorPlayerState::GetPlayerBudget()
+{
+	FTokenStruct Budget = *playerBonuses + *playerTokens;
+	return Budget;
+}
+void ASplendorPlayerState::SetPlayerBonus(FTokenStruct newBonus)
+{
+	playerBonuses->setParams(newBonus);
+	UE_LOG(LogTemp,Warning,TEXT("NEW PLAYER BONUSES D: %d , E: %d, S: %d, O: %d, R: %d "),playerBonuses->diamondTokens,playerBonuses->emeraldTokens, playerBonuses->sapphireTokens,playerBonuses->onyxTokens, playerBonuses->rubyTokens)
 }
