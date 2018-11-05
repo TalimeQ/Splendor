@@ -22,6 +22,7 @@ Sets the amount of player tokens to the one provided in function parameter. Yes 
 void ASplendorPlayerState::SetPlayerTokens(FTokenStruct newTokenValue)
 {
 	playerTokens->setParams(newTokenValue);
+	UE_LOG(LogTemp, Warning, TEXT("NEW PLAYER TOKEN STATE D: %d , E: %d, S: %d, O: %d, R: %d "), playerTokens->diamondTokens, playerTokens->emeraldTokens,playerTokens->sapphireTokens, playerTokens->onyxTokens, playerTokens->rubyTokens)
 }
 int ASplendorPlayerState::ReturnNumberOfCards()
 {
@@ -53,7 +54,10 @@ FTokenStruct ASplendorPlayerState::GetPlayerBonuses()
 }
 FTokenStruct ASplendorPlayerState::GetPlayerBudget()
 {
-	FTokenStruct Budget = *playerBonuses + *playerTokens;
+	FTokenStruct tempBonus = *playerBonuses;
+	FTokenStruct tempTokens = *playerTokens;
+	FTokenStruct Budget = tempBonus + tempTokens;
+	UE_LOG(LogTemp, Warning, TEXT("PLayerstate gold: %d , %d"), Budget.goldTokens,playerBonuses->goldTokens);
 	return Budget;
 }
 void ASplendorPlayerState::SetPlayerBonus(FTokenStruct newBonus)

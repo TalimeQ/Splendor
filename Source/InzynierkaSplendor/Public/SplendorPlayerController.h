@@ -43,7 +43,7 @@ public:
 	void AddTokens(FTokenStruct tokensToAdd);
 	bool CheckIfCanReserve();
 	bool CheckBudget(FTokenStruct comparedAmount);
-	void BuyCard(FTokenStruct cardBonus, int prestige);
+	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige);
 protected:
 	virtual void SetupInputComponent() override;
 	UFUNCTION(BlueprintCallable)

@@ -144,15 +144,24 @@ bool ASplendorPlayerController::CheckBudget(FTokenStruct comparedAmount)
 	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
 	if (!playerState) return false;
 	FTokenStruct playerBudget = playerState->GetPlayerBudget();
-	// Note to self, atm cards are initialized as empty. This is not a bug, but a kinda protection.
+	// Note to self, atm cards are initialized as empty. This is not a bug, but a kinda struct protection, well at least its not NULLPTR
 	return comparedAmount <= playerBudget;
 }
-void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus, int prestige)
+void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost, int prestige)
 {
 	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
 	if (!playerState) return;
 	int oldPrestige = playerState->GetPlayerPrestige();
 	playerState->SetPlayerPrestige(oldPrestige + prestige);
+
+	FTokenStruct playerBonuses = playerState->GetPlayerBonuses();
+	FTokenStruct playerBudget = playerState->GetPlayerTokens();
+	// Overloaded, deduce player bonuses from costs as stated in game rules
+	cost - playerBonuses;
+	// now remove tokens that are needed to buy stuffs
+	playerBudget - cost;
+	playerState->SetPlayerTokens(playerBudget);
+
 
 	FTokenStruct oldBonus = playerState->GetPlayerBonuses();
 	FTokenStruct newBonus = oldBonus + cardBonus;

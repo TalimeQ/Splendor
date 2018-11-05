@@ -156,4 +156,5 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 		int tokensTotal = emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
 		return tokensTotal;
 	}
+	
 };

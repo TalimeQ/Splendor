@@ -23,6 +23,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		FCardStruct cardParams;
 		virtual void BeginPlay() override;
+		bool IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRef);
 protected:
 
 	UPROPERTY(BlueprintAssignable)
@@ -32,6 +33,8 @@ public:
 	virtual void OnRaycast() override;
 	UFUNCTION(BlueprintCallable)
 	bool CheckIfBuyable(ASplendorPlayerController* playerRef);
+	UFUNCTION(BlueprintCallable)
+	bool CheckIfBuyableWithGold(ASplendorPlayerController* playerRef);
 	UFUNCTION(BlueprintCallable)
 	void CardBuy(ASplendorPlayerController* buyingPlayer);
 };
