@@ -156,5 +156,28 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 		int tokensTotal = emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
 		return tokensTotal;
 	}
+	void NormalizeCost()
+	{
+		if (emeraldTokens < 0)
+		{
+			emeraldTokens = 0;
+		}
+		if (sapphireTokens < 0)
+		{
+			sapphireTokens = 0;
+		}
+		if (rubyTokens < 0)
+		{
+			rubyTokens = 0;
+		}
+		if (onyxTokens < 0 )
+		{
+			onyxTokens = 0;
+		}
+		if (diamondTokens < 0)
+		{
+			diamondTokens = 0;
+		}
+	}
 	
 };

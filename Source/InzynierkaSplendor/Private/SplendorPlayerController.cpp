@@ -158,6 +158,8 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 	FTokenStruct playerBudget = playerState->GetPlayerTokens();
 	// Overloaded, deduce player bonuses from costs as stated in game rules
 	cost - playerBonuses;
+	// Protecting from scenario where player has bigger bonus then card cost making cost to be - , thus adding tokens instead of removing some.
+	cost.NormalizeCost();
 	// now remove tokens that are needed to buy stuffs
 	playerBudget - cost;
 	playerState->SetPlayerTokens(playerBudget);
