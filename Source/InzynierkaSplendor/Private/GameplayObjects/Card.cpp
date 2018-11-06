@@ -29,7 +29,11 @@ void ACard::CardBuy(ASplendorPlayerController* buyingPlayer)
 	{
 		return;
 	}
-	buyingPlayer->BuyCard(this->cardParams.cardBonus,this->cardParams.cardCost,this->cardParams.prestige);
+	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, false);
+}
+void ACard::GoldCardBuy(ASplendorPlayerController* buyingPlayer)
+{
+	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, true);
 }
 bool ACard::CheckIfBuyableWithGold(ASplendorPlayerController* playerRef)
 {

@@ -179,5 +179,38 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 			diamondTokens = 0;
 		}
 	}
-	
+	/*
+	Only run after checking player statuses. 
+	*/
+	void DeductGold(FTokenStruct &playerBudget)
+	{
+		int tempGold = playerBudget.goldTokens;
+		if (this->emeraldTokens < 0)
+		{
+			
+			playerBudget.goldTokens += this->emeraldTokens;
+			emeraldTokens += (tempGold - playerBudget.goldTokens);
+			
+		}
+		if (this->diamondTokens < 0)
+		{
+			playerBudget.goldTokens += this->diamondTokens;
+			diamondTokens += (tempGold - playerBudget.goldTokens);
+		}
+		if (this->rubyTokens < 0)
+		{
+			playerBudget.goldTokens += this->rubyTokens;
+			rubyTokens += (tempGold - playerBudget.goldTokens);
+		}
+		if (this->sapphireTokens < 0)
+		{
+			playerBudget.goldTokens += this->sapphireTokens;
+			sapphireTokens += (tempGold - playerBudget.goldTokens);
+		}
+		if (this->onyxTokens< 0)
+		{
+			playerBudget.goldTokens += this->onyxTokens;
+			onyxTokens += (tempGold - playerBudget.goldTokens);
+		}
+	}
 };
