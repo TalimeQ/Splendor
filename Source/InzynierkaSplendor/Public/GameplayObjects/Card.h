@@ -32,6 +32,8 @@ protected:
 public:
 	virtual void OnRaycast() override;
 	UFUNCTION(BlueprintCallable)
+	void Reserve(ASplendorPlayerController* playerRef);
+	UFUNCTION(BlueprintCallable)
 	bool CheckIfBuyable(ASplendorPlayerController* playerRef);
 	UFUNCTION(BlueprintCallable)
 	bool CheckIfBuyableWithGold(ASplendorPlayerController* playerRef);

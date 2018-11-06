@@ -41,6 +41,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ForceInput();
 	void AddTokens(FTokenStruct tokensToAdd);
+	UFUNCTION(BlueprintCallable)
 	bool CheckIfCanReserve();
 	bool CheckBudget(FTokenStruct comparedAmount);
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold);

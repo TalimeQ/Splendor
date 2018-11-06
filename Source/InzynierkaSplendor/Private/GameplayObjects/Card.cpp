@@ -30,10 +30,12 @@ void ACard::CardBuy(ASplendorPlayerController* buyingPlayer)
 		return;
 	}
 	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, false);
+	// TODO :: Handle card destruction handle card destruction or refill
 }
 void ACard::GoldCardBuy(ASplendorPlayerController* buyingPlayer)
 {
 	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, true);
+	// TODO :: Handle card destruction handle card destruction or refill
 }
 bool ACard::CheckIfBuyableWithGold(ASplendorPlayerController* playerRef)
 {
@@ -58,4 +60,11 @@ bool ACard::IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRe
 	{
 		return false;
 	}
+}
+void ACard::Reserve(ASplendorPlayerController* playerRef)
+{
+	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(playerRef->PlayerState);
+	playerState->ReserveCard(this->cardParams);
+	// TODO :: Handle card destruction handle card destruction or refill
+
 }
