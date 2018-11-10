@@ -4,28 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameplayObjects/Interactable.h"
-// Refactor this later, first get the struct going.
+#include "CardStruct.h"
 #include "Public/GameplayObjects/TokenStruct.h"
 #include "CardStack.generated.h"
 
 class ATokenStash;
 class ASplendorPlayerState;
-//TODO :: Refactor
-USTRUCT(BlueprintType,Blueprintable) struct FCardStruct
-{
-	GENERATED_BODY()
-		UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Card Cost")
-		FTokenStruct cardCost;
-		UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Currency Provided")
-		FTokenStruct cardBonus;
-		UPROPERTY(BlueprintReadWrite,EditAnywhere, Category = "Points Provided")
-		int prestige;
-			
-		FCardStruct() : cardCost(FTokenStruct()),cardBonus(FTokenStruct()),prestige(0)
-		{
 
-		}
-};
 class ASplendorPlayerController;
 /**
  * 

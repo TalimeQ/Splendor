@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameplayObjects/Interactable.h"
-// TODO :: refactor point FCARDSTUCK
-#include "Public/GameplayObjects/CardStack.h"
+// Still cardstruct refactor point
+#include "CardStruct.h"
 #include "Card.generated.h"
 
 /**
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCardRequest);
-
+class ATokenStash;
 
 UCLASS()
 class INZYNIERKASPLENDOR_API ACard : public AInteractable
@@ -28,6 +28,8 @@ protected:
 
 	UPROPERTY(BlueprintAssignable)
 		FOnCardRequest OnCardRequest;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		ATokenStash* tokenStashRef;
 
 public:
 	virtual void OnRaycast() override;
