@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameplayObjects/Interactable.h"
-// Still cardstruct refactor point
 #include "CardStruct.h"
 #include "Card.generated.h"
 

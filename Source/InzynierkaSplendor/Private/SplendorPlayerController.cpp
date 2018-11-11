@@ -12,13 +12,14 @@ void ASplendorPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	InitializeEdgePanningParameters();
-
+	UE_LOG(LogTemp, Warning, TEXT("Controller Created"));
 
 }
 
 void ASplendorPlayerController::Tick(float DeltaTime)
 {
-	Super::PlayerTick(DeltaTime);
+	Super::Tick(DeltaTime);
+	if (!playerPawnRef) return;
 	MovePawn();
 
 

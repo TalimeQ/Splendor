@@ -47,11 +47,9 @@ bool ACard::IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRe
 {
 	FTokenStruct playerBudget = Cast<ASplendorPlayerState>(playerRef->PlayerState)->GetPlayerBudget();
 	int tempGoldStorage = playerBudget.goldTokens;
-	
 	playerBudget.goldTokens = 0;
 	FTokenStruct compared = cost - playerBudget;
 	compared.Count();
-	UE_LOG(LogTemp, Warning, TEXT("Player gold %d, compared %d"), tempGoldStorage,compared.Count())
 	if (compared.tokensTotal <= tempGoldStorage)
 	{
 		return true;
