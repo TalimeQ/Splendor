@@ -19,7 +19,7 @@ class INZYNIERKASPLENDOR_API ACard : public AInteractable
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Replicated)
 		FCardStruct cardParams;
 		virtual void BeginPlay() override;
 		bool IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRef);
@@ -42,4 +42,5 @@ public:
 	void CardBuy(ASplendorPlayerController* buyingPlayer);
 	UFUNCTION(BlueprintCallable)
 		void GoldCardBuy(ASplendorPlayerController* buyingPlayer);
+	
 };

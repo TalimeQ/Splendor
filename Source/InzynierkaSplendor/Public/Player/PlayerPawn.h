@@ -20,6 +20,7 @@ public:
 	// Sets default values for this pawn's properties
 	APlayerPawn();
 	void ChangePosition(FVector newLocationVector);
+	void RestartPos();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

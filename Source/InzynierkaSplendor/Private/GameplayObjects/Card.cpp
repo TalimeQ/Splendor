@@ -2,6 +2,7 @@
 
 #include "Card.h"
 #include "Public/Player/SplendorPlayerState.h"
+#include "UnrealNetwork.h"
 #include "Public/SplendorPlayerController.h"
 
 
@@ -65,4 +66,8 @@ void ACard::Reserve(ASplendorPlayerController* playerRef)
 	playerState->ReserveCard(this->cardParams);
 	// TODO :: Handle card destruction handle card destruction or refill
 
+}
+void  ACard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACard, cardParams);
 }

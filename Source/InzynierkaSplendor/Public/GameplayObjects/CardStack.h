@@ -24,7 +24,7 @@ class INZYNIERKASPLENDOR_API ACardStack : public AInteractable
 	GENERATED_BODY()
 	
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Replicated)
 	TArray<FCardStruct> storedCards;
 	UPROPERTY(EditAnywhere)
 	ATokenStash* tokenStashRef;

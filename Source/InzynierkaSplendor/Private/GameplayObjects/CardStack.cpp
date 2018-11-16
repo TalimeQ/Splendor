@@ -85,3 +85,6 @@ void ACardStack::ReserveCard(ASplendorPlayerState *requestingPlayerState)
 		this->Destroy();
 	}
 }
+void  ACardStack::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+}

@@ -56,5 +56,10 @@ void APlayerPawn::SetupCamera()
 void APlayerPawn::InitializeRaycast(FVector mousePos, FVector mouseDir)
 {
 	if (!raycastHandler) return;
+	
 	raycastHandler->Raycast(mousePos,mouseDir);
+}
+void APlayerPawn::RestartPos()
+{
+	this->SetActorLocation(FVector(0, 0, 0));
 }
