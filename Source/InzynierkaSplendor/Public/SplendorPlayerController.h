@@ -28,7 +28,7 @@ private:
 	void MovePawn();
 	void InitializeEdgePanningParameters();
 	void StartRaycasting();
-
+	void RestartPawn();
 	FVector GetCameraPanDirection();
 	// Todo :: Make it inspector editable
 	float margin = 15.0f;

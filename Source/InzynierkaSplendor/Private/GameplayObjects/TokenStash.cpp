@@ -3,6 +3,7 @@
 #include "Public/GameplayObjects/TokenStash.h"
 #include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/SplendorPlayerController.h"
+#include "UnrealNetwork.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
 ATokenStash::ATokenStash()
@@ -15,7 +16,7 @@ ATokenStash::ATokenStash()
 	4 player -> 7 gems of each
 
 	*/
-	tokenPool = new FTokenStruct(7, 5);
+	tokenPool =  FTokenStruct(7, 5);
 }
 
 void ATokenStash::OnRaycast()
@@ -76,15 +77,21 @@ void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlay
 		}
 		
 	}
-	if (tokensBeingTaken.goldTokens == 1 && tokenPool->goldTokens <= 0)
+	if (tokensBeingTaken.goldTokens == 1 && tokenPool.goldTokens <= 0)
 	{
 		
 		return;
 	}
-	tokenPool->setParams(*tokenPool - tokensBeingTaken); 
+	// Add Server change token pool function
+	if(Role < ROLE_Authority)
+	{ 
+		// ServerSetTokenPool(FTokenStruct newTokenValue)
+	tokenPool- tokensBeingTaken; 
+	}
 	playerContRef->AddTokens(tokensBeingTaken);
 	// TODO :: Remove LOG after interface implementation :)
-	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool->rubyTokens, tokenPool->diamondTokens, tokenPool->emeraldTokens, tokenPool->sapphireTokens, tokenPool->onyxTokens)
+	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool.rubyTokens, tokenPool.diamondTokens,
+		tokenPool.emeraldTokens, tokenPool.sapphireTokens, tokenPool.onyxTokens)
 		
 
 }
@@ -94,26 +101,31 @@ bool ATokenStash::CheckIfTokensAvailable(int tokenNumber, int checkedAmount)
 	switch (tokenNumber)
 	{
 	case 0:
-		if (tokenPool->rubyTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool.rubyTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 1:
-		if (tokenPool->emeraldTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool.emeraldTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 2:
-		if (tokenPool->diamondTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool.diamondTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 3:
-		if (tokenPool->onyxTokens< checkedAmount) bIsAvailable = false;
+		if (tokenPool.onyxTokens< checkedAmount) bIsAvailable = false;
 		break;
 	case 4:
-		if (tokenPool->sapphireTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool.sapphireTokens < checkedAmount) bIsAvailable = false;
 		break;
 	case 5:
-		if (tokenPool->goldTokens < checkedAmount) bIsAvailable = false;
+		if (tokenPool.goldTokens < checkedAmount) bIsAvailable = false;
 		break;
 	default:
 		UE_LOG(LogTemp,Warning,TEXT("Check if available :: unknown token"))
 		break;
 	}
 	return bIsAvailable;
+}
+
+void  ATokenStash::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ATokenStash, tokenPool);
 }

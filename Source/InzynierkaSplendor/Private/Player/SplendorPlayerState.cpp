@@ -2,7 +2,7 @@
 
 #include "SplendorPlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
-//TODO :: Refactor point, move struct to single .h file
+#include "UnrealNetwork.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "Public/GameplayObjects/TokenStash.h"
 
@@ -21,8 +21,10 @@ Sets the amount of player tokens to the one provided in function parameter. Yes 
 */
 void ASplendorPlayerState::SetPlayerTokens(FTokenStruct newTokenValue)
 {
+	if(ROLE_Authority){
 	playerTokens->setParams(newTokenValue);
 	UE_LOG(LogTemp, Warning, TEXT("NEW PLAYER TOKEN STATE D: %d , E: %d, S: %d, O: %d, R: %d "), playerTokens->diamondTokens, playerTokens->emeraldTokens,playerTokens->sapphireTokens, playerTokens->onyxTokens, playerTokens->rubyTokens)
+	}
 }
 int ASplendorPlayerState::ReturnNumberOfCards()
 {
@@ -30,11 +32,14 @@ int ASplendorPlayerState::ReturnNumberOfCards()
 }
 void ASplendorPlayerState::ReserveCard(FCardStruct CardValues)
 {
+	if(Role == ROLE_Authority)
+	{ 
 	FCardStruct* tempCardPtr = new FCardStruct();
 	tempCardPtr->cardBonus = CardValues.cardBonus;
 	tempCardPtr->cardCost = CardValues.cardCost;
 	tempCardPtr->prestige = CardValues.prestige;
 	reservedCards.Add(tempCardPtr);
+	}
 }
 void ASplendorPlayerState::BuyReservedCard(int cardIndex)
 {
@@ -42,7 +47,10 @@ void ASplendorPlayerState::BuyReservedCard(int cardIndex)
 }
 void ASplendorPlayerState::SetPlayerPrestige(int newPrestige)
 {
-	prestige = newPrestige;
+	if (Role == ROLE_Authority)
+	{
+		prestige = newPrestige;
+	}
 }
 int ASplendorPlayerState::GetPlayerPrestige()
 {
@@ -62,6 +70,12 @@ FTokenStruct ASplendorPlayerState::GetPlayerBudget()
 }
 void ASplendorPlayerState::SetPlayerBonus(FTokenStruct newBonus)
 {
+	if (Role == ROLE_Authority)
+	{
 	playerBonuses->setParams(newBonus);
+	}
 	UE_LOG(LogTemp,Warning,TEXT("NEW PLAYER BONUSES D: %d , E: %d, S: %d, O: %d, R: %d "),playerBonuses->diamondTokens,playerBonuses->emeraldTokens, playerBonuses->sapphireTokens,playerBonuses->onyxTokens, playerBonuses->rubyTokens)
+}
+void  ASplendorPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }

@@ -87,7 +87,7 @@ void ASplendorPlayerController::OnRightClick()
 {
 	// This will cancel actions
 	// TODO :: Implement :)
-	UE_LOG(LogTemp, Warning, TEXT("Right mouse button clicked"));
+	RestartPawn();
 
 }
 void ASplendorPlayerController::ToggleInput()
@@ -171,4 +171,8 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 	FTokenStruct oldBonus = playerState->GetPlayerBonuses();
 	FTokenStruct newBonus = oldBonus + cardBonus;
 	playerState->SetPlayerBonus(newBonus);
+}
+void ASplendorPlayerController::RestartPawn()
+{
+	playerPawnRef->RestartPos();
 }

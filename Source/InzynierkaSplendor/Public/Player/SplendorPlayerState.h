@@ -21,9 +21,13 @@ class INZYNIERKASPLENDOR_API ASplendorPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 private:
+		//UPROPERTY(Replicated)
 		TArray<FCardStruct*>  reservedCards;
+		//UPROPERTY(Replicated) TODO :replication maybe
 		FTokenStruct *playerTokens = nullptr;
+		//UPROPERTY(Replicated) TODO :replication maybe
 		FTokenStruct *playerBonuses = nullptr;
+		UPROPERTY(Replicated)
 		int prestige;
 public:
 	ASplendorPlayerState();
