@@ -60,6 +60,7 @@ void ACardStack::ProcessReservationRequest(ASplendorPlayerController *requesting
 void ACardStack::ShuffleCards()
 {
 	// Should shuffle decently enough
+	if (storedCards.Num() == 0) return;
 	for (uint32 i = storedCards.Num() -1; i > 0; i--)
 	{
 		int32 index = FMath::FloorToInt(FMath::Rand() * (i + 1) % storedCards.Num());
