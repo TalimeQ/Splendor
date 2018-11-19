@@ -16,6 +16,7 @@ ATokenStash::ATokenStash()
 	4 player -> 7 gems of each
 
 	*/
+	bReplicates = true;
 	tokenPool =  FTokenStruct(7, 5);
 }
 
@@ -82,12 +83,7 @@ void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlay
 		
 		return;
 	}
-	// Add Server change token pool function
-	if(Role < ROLE_Authority)
-	{ 
-		// ServerSetTokenPool(FTokenStruct newTokenValue)
-	tokenPool- tokensBeingTaken; 
-	}
+	playerContRef->CallTokenStashUpdate(this, tokensBeingTaken);
 	playerContRef->AddTokens(tokensBeingTaken);
 	// TODO :: Remove LOG after interface implementation :)
 	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool.rubyTokens, tokenPool.diamondTokens,
@@ -128,4 +124,27 @@ bool ATokenStash::CheckIfTokensAvailable(int tokenNumber, int checkedAmount)
 void  ATokenStash::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ATokenStash, tokenPool);
+}
+void  ATokenStash::SetTokenAmount(FTokenStruct deductedTokenAmount)
+{
+	
+	
+	if (Role == ROLE_Authority)
+	{
+		this->tokenPool - deductedTokenAmount;
+		
+	}
+	else
+	{
+		ServerSetTokenAmount(deductedTokenAmount);
+	}
+}
+void  ATokenStash::ServerSetTokenAmount_Implementation(FTokenStruct deductedTokenAmount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Wlazlem do tokenstash  implementation"))
+	SetTokenAmount(deductedTokenAmount);
+}
+bool ATokenStash::ServerSetTokenAmount_Validate(FTokenStruct deductedTokenAmount)
+{
+	return true;
 }

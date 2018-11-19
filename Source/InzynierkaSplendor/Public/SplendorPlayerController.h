@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayObjects/TokenStruct.h"
 /*
 Refactoring
 */
@@ -12,7 +13,7 @@ Refactoring
 
 
 class APlayerPawn;
-struct FTokenStruct;
+class ATokenStash;
 
 /**	
  * 
@@ -35,6 +36,9 @@ private:
 	APlayerPawn* playerPawnRef = nullptr;
 	int32 screenSizeX;
 	int32 screenSizeY;
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerCallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInput();
@@ -45,7 +49,10 @@ public:
 	bool CheckIfCanReserve();
 	bool CheckBudget(FTokenStruct comparedAmount);
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold);
+
+	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
 	
+
 protected:
 	virtual void SetupInputComponent() override;
 	UFUNCTION(BlueprintCallable)
