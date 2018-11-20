@@ -6,6 +6,7 @@
 #include "Public/Player/SplendorPlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/GameplayObjects/TokenStash.h"
+#include "InzynierkaSplendorGameModeBase.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
@@ -15,7 +16,7 @@ void ASplendorPlayerController::BeginPlay()
 	Super::BeginPlay();
 	InitializeEdgePanningParameters();
 	UE_LOG(LogTemp, Warning, TEXT("Controller Created"));
-	
+
 
 }
 
@@ -84,6 +85,7 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 }
 void ASplendorPlayerController::OnLeftClick()
 {
+	if (!Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) return;
 	StartRaycasting();
 }
 void ASplendorPlayerController::OnRightClick()
@@ -119,6 +121,8 @@ void ASplendorPlayerController::AddTokens(FTokenStruct tokensToAdd)
 		// This is just for debug purposes :) TODO :: When the interface will be implemented, remove this.
 		playerOwnedTokens = playerStateRef->GetPlayerTokens();
 		UE_LOG(LogTemp, Warning, TEXT("Final player Token State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), playerOwnedTokens.rubyTokens, playerOwnedTokens.diamondTokens, playerOwnedTokens.emeraldTokens, playerOwnedTokens.sapphireTokens, playerOwnedTokens.onyxTokens)
+		// Konczymy ture
+		this->CallTurnEnd();
 	}
 }
 void ASplendorPlayerController::StartRaycasting()
@@ -181,7 +185,7 @@ void ASplendorPlayerController::RestartPawn()
 }
 void ASplendorPlayerController::CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Wlazlem do call tokenstsah "))
+	
 	if (Role == ROLE_Authority)
 	{
 		tokenStash->SetTokenAmount(tokenAmount);
@@ -198,6 +202,26 @@ void  ASplendorPlayerController::ServerCallTokenStashUpdate_Implementation(AToke
 	
 }
 bool ASplendorPlayerController::ServerCallTokenStashUpdate_Validate(ATokenStash * tokenStash, FTokenStruct tokenAmount)
+{
+	return true;
+}
+void ASplendorPlayerController::CallTurnEnd()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Wlazlem do call turn end "))
+	if (Role == ROLE_Authority)
+	{
+		Cast<AInzynierkaSplendorGameModeBase>(GetWorld()->GetAuthGameMode())->ProcessTurnInfo();
+	}
+	else
+	{
+		ServerCallTurnEnd();
+	}
+}
+void ASplendorPlayerController::ServerCallTurnEnd_Implementation()
+{
+	CallTurnEnd();
+}
+bool ASplendorPlayerController::ServerCallTurnEnd_Validate()
 {
 	return true;
 }

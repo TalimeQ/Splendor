@@ -141,7 +141,6 @@ void  ATokenStash::SetTokenAmount(FTokenStruct deductedTokenAmount)
 }
 void  ATokenStash::ServerSetTokenAmount_Implementation(FTokenStruct deductedTokenAmount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Wlazlem do tokenstash  implementation"))
 	SetTokenAmount(deductedTokenAmount);
 }
 bool ATokenStash::ServerSetTokenAmount_Validate(FTokenStruct deductedTokenAmount)

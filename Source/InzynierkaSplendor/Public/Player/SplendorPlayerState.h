@@ -13,6 +13,7 @@ add references to cards that have been bought ;)
 
 struct FTokenStruct;
 struct FCardStruct;
+class ASplendorPlayerController;
 /**
  * 
  */
@@ -29,6 +30,9 @@ private:
 		FTokenStruct *playerBonuses = nullptr;
 		UPROPERTY(Replicated)
 		int prestige;
+		UPROPERTY(Replicated)
+		bool bIsTurn = false;
+
 public:
 	ASplendorPlayerState();
 	FTokenStruct GetPlayerTokens();
@@ -41,5 +45,6 @@ public:
 	FTokenStruct GetPlayerBonuses();
 	int GetPlayerPrestige();
 	void SetPlayerPrestige(int newPrestige);
-
+	void SetTurnStatus(bool bNewTurnStatus);
+	bool GetTurnStatus();
 };

@@ -38,6 +38,8 @@ private:
 	int32 screenSizeY;
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerCallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerCallTurnEnd();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -51,6 +53,7 @@ public:
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold);
 
 	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
+	void CallTurnEnd();
 	
 
 protected:
