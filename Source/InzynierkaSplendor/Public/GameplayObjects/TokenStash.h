@@ -21,12 +21,21 @@ private:
 	UPROPERTY(Replicated)
 	FTokenStruct tokenPool;
 	virtual void BeginPlay() override;
+
 public:
 
 	ATokenStash();
 	virtual void OnRaycast() override;
 	UFUNCTION(BlueprintCallable, Category = "Tokens")
 	void ProcessTokenRequest(TArray<int>requestedTokens , ASplendorPlayerController* playerContRef);
+
+	UFUNCTION(BlueprintCallable)
+	void SetTokenAmount(FTokenStruct deductedTokenAmount);
+	// privatize it?
+	UFUNCTION(reliable, server, WithValidation)
+	void ServerSetTokenAmount(FTokenStruct deductedTokenAmount);
+
+
 	/* Checks if token can be taken in amount of 2 or not
 	@param int tokenNumber
 	-> 0 ruby

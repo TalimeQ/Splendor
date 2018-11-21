@@ -2,8 +2,10 @@
 
 #include "Public/SplendorPlayerController.h"
 #include "Public/Player/PlayerPawn.h"
+#include "UnrealNetwork.h"
 #include "Public/Player/SplendorPlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
+#include "Public/GameplayObjects/TokenStash.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
@@ -13,6 +15,7 @@ void ASplendorPlayerController::BeginPlay()
 	Super::BeginPlay();
 	InitializeEdgePanningParameters();
 	UE_LOG(LogTemp, Warning, TEXT("Controller Created"));
+	
 
 }
 
@@ -175,4 +178,26 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 void ASplendorPlayerController::RestartPawn()
 {
 	playerPawnRef->RestartPos();
+}
+void ASplendorPlayerController::CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Wlazlem do call tokenstsah "))
+	if (Role == ROLE_Authority)
+	{
+		tokenStash->SetTokenAmount(tokenAmount);
+	}
+	else 
+	{
+		ServerCallTokenStashUpdate(  tokenStash,  tokenAmount);
+	}
+	
+}
+void  ASplendorPlayerController::ServerCallTokenStashUpdate_Implementation(ATokenStash * tokenStash, FTokenStruct tokenAmount)
+{
+	CallTokenStashUpdate(tokenStash, tokenAmount);
+	
+}
+bool ASplendorPlayerController::ServerCallTokenStashUpdate_Validate(ATokenStash * tokenStash, FTokenStruct tokenAmount)
+{
+	return true;
 }
