@@ -40,6 +40,7 @@ void ASplendorPlayerState::ReserveCard(FCardStruct CardValues)
 	tempCardPtr->cardCost = CardValues.cardCost;
 	tempCardPtr->prestige = CardValues.prestige;
 	reservedCards.Add(tempCardPtr);
+	
 	}
 }
 void ASplendorPlayerState::BuyReservedCard(int cardIndex)

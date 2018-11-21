@@ -34,17 +34,17 @@ void ACardStack::ProcessReservationRequest(ASplendorPlayerController *requesting
 	
 	
 	// Check if theres gold, ask if player still wants to reserve card
-	if (!tokenStashRef || !playerState) return;
+	if (!tokenStashRef ) return;
 	else if (isForced)
 	{
-		ReserveCard(playerState);
+		ReserveCard(requestingPlayer);
 		return;
 	}
 	else if (tokenStashRef->CheckIfTokensAvailable(5, 1))
 	{
 		//Reserve Card if there was gold
 		AddGold(requestingPlayer);
-		ReserveCard(playerState);
+		ReserveCard(requestingPlayer);
 
 		
 	}
@@ -76,10 +76,10 @@ void ACardStack::AddGold(ASplendorPlayerController *requestingPlayer)
 	goldToken.Add(5); // 5 is the number of gold token
 	tokenStashRef->ProcessTokenRequest(goldToken, requestingPlayer);
 }
-void ACardStack::ReserveCard(ASplendorPlayerState *requestingPlayerState)
+void ACardStack::ReserveCard(ASplendorPlayerController *requestingPlayer)
 {
 	FCardStruct cardToReserve = storedCards.Pop(true);
-	requestingPlayerState->ReserveCard(cardToReserve);
+	requestingPlayer->ReserveCard(&cardToReserve);
 	UE_LOG(LogTemp, Warning, TEXT("Cards remaining %d"), storedCards.Num());
 	if (storedCards.Num() <= 0)
 	{

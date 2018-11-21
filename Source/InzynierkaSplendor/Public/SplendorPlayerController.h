@@ -14,7 +14,7 @@ Refactoring
 
 class APlayerPawn;
 class ATokenStash;
-
+struct FCardStruct;
 /**	
  * 
  */
@@ -50,6 +50,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool CheckIfCanReserve();
 	bool CheckBudget(FTokenStruct comparedAmount);
+	void ReserveCard(FCardStruct* reservedCard);
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold);
 
 	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);

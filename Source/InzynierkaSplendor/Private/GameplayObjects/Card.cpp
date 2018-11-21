@@ -62,8 +62,9 @@ bool ACard::IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRe
 }
 void ACard::Reserve(ASplendorPlayerController* playerRef)
 {
-	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(playerRef->PlayerState);
-	playerState->ReserveCard(this->cardParams);
+	//ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(playerRef->PlayerState);
+	//playerState->ReserveCard(this->cardParams);
+	playerRef->ReserveCard(&(this->cardParams));
 	// TODO :: Handle card destruction handle card destruction or refill
 
 }

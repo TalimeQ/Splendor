@@ -9,7 +9,7 @@
 #include "CardStack.generated.h"
 
 class ATokenStash;
-class ASplendorPlayerState;
+
 
 class ASplendorPlayerController;
 /**
@@ -30,7 +30,7 @@ private:
 	ATokenStash* tokenStashRef;
 	void ShuffleCards();
 	void AddGold(ASplendorPlayerController *requestingPlayer);
-	void ReserveCard(ASplendorPlayerState *requestingPlayerState);
+	void ReserveCard(ASplendorPlayerController *requestingPlayer);
 public:
 	UPROPERTY(BlueprintAssignable)
 		FOnCardStackRequest OnCardStackRequest;
