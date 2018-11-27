@@ -1,5 +1,6 @@
 #include "CardStack.h"
 #include "UnrealMathUtility.h"
+#include "UnrealNetwork.h"
 #include "Public/SplendorPlayerController.h"
 #include "Public/GameplayObjects/TokenStash.h"
 #include "Public/Player/SplendorPlayerState.h"
@@ -80,6 +81,7 @@ void ACardStack::ReserveCard(ASplendorPlayerController *requestingPlayer)
 {
 	FCardStruct cardToReserve = storedCards.Pop(true);
 	requestingPlayer->ReserveCard(&cardToReserve);
+	requestingPlayer->CallRequestCardPop(this);
 	UE_LOG(LogTemp, Warning, TEXT("Cards remaining %d"), storedCards.Num());
 	if (storedCards.Num() <= 0)
 	{
@@ -88,4 +90,28 @@ void ACardStack::ReserveCard(ASplendorPlayerController *requestingPlayer)
 }
 void  ACardStack::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACardStack, storedCards);
+}
+void ACardStack::PopCardArray()
+{
+	if (Role != ROLE_Authority)
+	{
+		ServerPopCardArray();
+	}
+	else
+	{
+		this->storedCards.Pop(true);
+		if (storedCards.Num() <= 0)
+		{
+			this->Destroy();
+		}
+	}
+}
+void ACardStack::ServerPopCardArray_Implementation()
+{
+	PopCardArray();
+}
+bool ACardStack::ServerPopCardArray_Validate()
+{
+	return true;
 }

@@ -13,6 +13,7 @@ Refactoring
 
 
 class APlayerPawn;
+class ACardStack;
 class ATokenStash;
 struct FCardStruct;
 /**	
@@ -39,7 +40,9 @@ private:
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerCallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
 	UFUNCTION(Server, Reliable, WithValidation)
-		void ServerCallTurnEnd();
+	void ServerRequestsCardPop(ACardStack* cardStackToPop);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerCallTurnEnd();
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -55,6 +58,7 @@ public:
 
 	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
 	void CallTurnEnd();
+	void CallRequestCardPop(ACardStack* cardStackToPop);
 	
 
 protected:

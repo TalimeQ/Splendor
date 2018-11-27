@@ -7,6 +7,7 @@
 #include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/GameplayObjects/TokenStash.h"
 #include "Public/GameplayObjects/CardStruct.h"
+#include "Public/GameplayObjects/CardStack.h"
 #include "InzynierkaSplendorGameModeBase.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
@@ -241,6 +242,25 @@ void ASplendorPlayerController::ServerCallTurnEnd_Implementation()
 	CallTurnEnd();
 }
 bool ASplendorPlayerController::ServerCallTurnEnd_Validate()
+{
+	return true;
+}
+void ASplendorPlayerController::CallRequestCardPop(ACardStack* cardStackToPop)
+{
+	if (Role == ROLE_Authority)
+	{
+		cardStackToPop->PopCardArray();
+	}
+	else
+	{
+		ServerRequestsCardPop(cardStackToPop);
+	}
+}
+void ASplendorPlayerController::ServerRequestsCardPop_Implementation(ACardStack* cardStackToPop)
+{
+	CallRequestCardPop(cardStackToPop);
+}
+bool ASplendorPlayerController::ServerRequestsCardPop_Validate(ACardStack* cardStackToPop)
 {
 	return true;
 }

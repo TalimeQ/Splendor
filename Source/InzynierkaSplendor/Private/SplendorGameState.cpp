@@ -1,7 +1,7 @@
-
+#include "SplendorGameState.h"
 #include "InzynierkaSplendor/Public/Player/SplendorPlayerState.h"
 #include "UnrealNetwork.h"
-#include "SplendorGameState.h"
+
 
 
 ASplendorGameState::ASplendorGameState()

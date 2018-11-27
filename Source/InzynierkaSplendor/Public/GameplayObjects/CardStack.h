@@ -40,5 +40,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ProcessReservationRequest(ASplendorPlayerController *requestingPlayer, bool isForced);
 	virtual void BeginPlay() override;
-	
+	/*
+	Called when client pops a reserved card from stack.
+	*/
+	void PopCardArray();
+	UFUNCTION(Server, reliable,WithValidation)
+	void ServerPopCardArray();
 };
