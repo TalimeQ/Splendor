@@ -79,14 +79,11 @@ void ACardStack::AddGold(ASplendorPlayerController *requestingPlayer)
 }
 void ACardStack::ReserveCard(ASplendorPlayerController *requestingPlayer)
 {
-	FCardStruct cardToReserve = storedCards.Pop(true);
+	// We will ask server to pop it with removal instead 
+	FCardStruct cardToReserve = storedCards.Pop(false);
 	requestingPlayer->ReserveCard(&cardToReserve);
 	requestingPlayer->CallRequestCardPop(this);
-	UE_LOG(LogTemp, Warning, TEXT("Cards remaining %d"), storedCards.Num());
-	if (storedCards.Num() <= 0)
-	{
-		this->Destroy();
-	}
+
 }
 void  ACardStack::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

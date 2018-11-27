@@ -17,6 +17,7 @@ ATokenStash::ATokenStash()
 
 	*/
 	bReplicates = true;
+	bAlwaysRelevant = true;
 	tokenPool =  FTokenStruct(7, 5);
 }
 
@@ -132,6 +133,8 @@ void  ATokenStash::SetTokenAmount(FTokenStruct deductedTokenAmount)
 	if (Role == ROLE_Authority)
 	{
 		this->tokenPool - deductedTokenAmount;
+		// Updates visualy
+		this->VisualizeTokens(deductedTokenAmount);
 		
 	}
 	else
@@ -146,4 +149,19 @@ void  ATokenStash::ServerSetTokenAmount_Implementation(FTokenStruct deductedToke
 bool ATokenStash::ServerSetTokenAmount_Validate(FTokenStruct deductedTokenAmount)
 {
 	return true;
+}
+void ATokenStash::VisualizeTokens(FTokenStruct deductedTokenAmount)
+{
+	if (!(emeraldTokenBottom || rubyTokenBottom || goldTokenBottom || sapphireTokenBottom ||onyxTokenBottom || diamondTokenBottom ))
+	{
+		UE_LOG(LogTemp,Warning,TEXT("ATokenStash :: stopped visualisation execution, one of top pointers is null"))
+		return;
+	}
+	emeraldTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.emeraldTokens * -7.5));
+	rubyTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.rubyTokens * -7.5));
+	goldTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.goldTokens * -7.5));
+	sapphireTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.sapphireTokens * -7.5));
+	diamondTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.diamondTokens * -7.5));
+	onyxTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.onyxTokens * -7.5));
+
 }

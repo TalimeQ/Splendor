@@ -22,6 +22,21 @@ private:
 	FTokenStruct tokenPool;
 	virtual void BeginPlay() override;
 
+	// For visuals ;)
+	UPROPERTY(EditInstanceOnly,  Category = "Visuals")
+		AActor* diamondTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* rubyTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* goldTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* emeraldTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* sapphireTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* onyxTokenBottom;
+	void VisualizeTokens(FTokenStruct deductedTokenAmount);
+
 public:
 
 	ATokenStash();
