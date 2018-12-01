@@ -86,9 +86,6 @@ void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlay
 	}
 	playerContRef->CallTokenStashUpdate(this, tokensBeingTaken);
 	playerContRef->AddTokens(tokensBeingTaken);
-	// TODO :: Remove LOG after interface implementation :)
-	UE_LOG(LogTemp, Warning, TEXT("TokenStash State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), tokenPool.rubyTokens, tokenPool.diamondTokens,
-		tokenPool.emeraldTokens, tokenPool.sapphireTokens, tokenPool.onyxTokens)
 		
 
 }
@@ -129,18 +126,18 @@ void  ATokenStash::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutL
 void  ATokenStash::SetTokenAmount(FTokenStruct deductedTokenAmount)
 {
 	
-	
 	if (Role == ROLE_Authority)
 	{
 		this->tokenPool - deductedTokenAmount;
 		// Updates visualy
-		this->VisualizeTokens(deductedTokenAmount);
+		this->VisualizeTokens();
 		
 	}
 	else
 	{
 		ServerSetTokenAmount(deductedTokenAmount);
 	}
+	
 }
 void  ATokenStash::ServerSetTokenAmount_Implementation(FTokenStruct deductedTokenAmount)
 {
@@ -150,18 +147,23 @@ bool ATokenStash::ServerSetTokenAmount_Validate(FTokenStruct deductedTokenAmount
 {
 	return true;
 }
-void ATokenStash::VisualizeTokens(FTokenStruct deductedTokenAmount)
+void ATokenStash::OnRep_VisualizeTokens()
 {
 	if (!(emeraldTokenBottom || rubyTokenBottom || goldTokenBottom || sapphireTokenBottom ||onyxTokenBottom || diamondTokenBottom ))
 	{
 		UE_LOG(LogTemp,Warning,TEXT("ATokenStash :: stopped visualisation execution, one of top pointers is null"))
 		return;
 	}
-	emeraldTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.emeraldTokens * -7.5));
-	rubyTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.rubyTokens * -7.5));
-	goldTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.goldTokens * -7.5));
-	sapphireTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.sapphireTokens * -7.5));
-	diamondTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.diamondTokens * -7.5));
-	onyxTokenBottom->AddActorLocalOffset(FVector(0, 0, deductedTokenAmount.onyxTokens * -7.5));
+	VisualizeTokens();
 
+
+}
+void ATokenStash::VisualizeTokens()
+{
+	emeraldTokenBottom->SetActorLocation(FVector(emeraldTokenBottom->GetActorLocation().X, emeraldTokenBottom->GetActorLocation().Y, tokenPool.emeraldTokens * 15 - 75));
+	rubyTokenBottom->SetActorLocation(FVector(rubyTokenBottom->GetActorLocation().X, rubyTokenBottom->GetActorLocation().Y, tokenPool.rubyTokens * 15 - 75));
+	goldTokenBottom->SetActorLocation(FVector(goldTokenBottom->GetActorLocation().X, goldTokenBottom->GetActorLocation().Y, tokenPool.goldTokens * 15 - 45));
+	sapphireTokenBottom->SetActorLocation(FVector(sapphireTokenBottom->GetActorLocation().X, sapphireTokenBottom->GetActorLocation().Y, tokenPool.sapphireTokens * 15 - 75));
+	diamondTokenBottom->SetActorLocation(FVector(diamondTokenBottom->GetActorLocation().X, diamondTokenBottom->GetActorLocation().Y, tokenPool.diamondTokens * 15 - 75));
+	onyxTokenBottom->SetActorLocation(FVector(onyxTokenBottom->GetActorLocation().X, onyxTokenBottom->GetActorLocation().Y, tokenPool.onyxTokens * 15 - 75));
 }

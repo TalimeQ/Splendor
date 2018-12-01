@@ -206,13 +206,15 @@ Server Calls
 
 void ASplendorPlayerController::CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount)
 {
-	
+
 	if (Role == ROLE_Authority)
 	{
+	
 		tokenStash->SetTokenAmount(tokenAmount);
 	}
 	else 
 	{
+	
 		ServerCallTokenStashUpdate(  tokenStash,  tokenAmount);
 	}
 	

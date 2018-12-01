@@ -18,7 +18,7 @@ class INZYNIERKASPLENDOR_API ATokenStash : public AInteractable
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing=OnRep_VisualizeTokens)
 	FTokenStruct tokenPool;
 	virtual void BeginPlay() override;
 
@@ -35,7 +35,9 @@ private:
 		AActor* sapphireTokenBottom;
 	UPROPERTY(EditInstanceOnly, Category = "Visuals")
 		AActor* onyxTokenBottom;
-	void VisualizeTokens(FTokenStruct deductedTokenAmount);
+	UFUNCTION()
+	void OnRep_VisualizeTokens();
+	void VisualizeTokens();
 
 public:
 
