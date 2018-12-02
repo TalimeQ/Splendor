@@ -18,7 +18,11 @@ void ACard::BeginPlay()
 	Super::BeginPlay();
 	cardParams = FCardStruct();
 	this->InitCard();
-	this->VisualizeCard();
+	if(Role = ROLE_Authority)
+	{
+		this->VisualizeCard();
+	}
+
 }
 bool ACard::CheckIfBuyable(ASplendorPlayerController* playerRef)
 {
@@ -78,6 +82,7 @@ void  ACard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetim
 }
 void ACard::OnRep_VisualizeCard()
 {
+	UE_LOG(LogTemp, Warning, TEXT("REPLICATING"));
 	VisualizeCard();
 	
 }
