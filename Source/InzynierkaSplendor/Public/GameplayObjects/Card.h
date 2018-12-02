@@ -11,7 +11,10 @@
  * 
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCardRequest);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FChangeCardVisuals);
 class ATokenStash;
+class ACardStack;
+
 
 UCLASS()
 class INZYNIERKASPLENDOR_API ACard : public AInteractable
@@ -19,16 +22,30 @@ class INZYNIERKASPLENDOR_API ACard : public AInteractable
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(EditAnywhere,Replicated)
-		FCardStruct cardParams;
+
 		virtual void BeginPlay() override;
 		bool IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRef);
+		
 protected:
-
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_VisualizeCard, BlueprintReadOnly)
+		FCardStruct cardParams;
 	UPROPERTY(BlueprintAssignable)
 		FOnCardRequest OnCardRequest;
+	UPROPERTY(BlueprintAssignable)
+		FChangeCardVisuals ChangeCardVisuals;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		ATokenStash* tokenStashRef;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		ACardStack * ownedCardStackRef;
+
+	UFUNCTION()
+		 void  OnRep_VisualizeCard();
+	UFUNCTION(BlueprintNativeEvent)
+		// Implemented in blueprints
+	void VisualizeCard();
+	virtual void VisualizeCard_Implementation();
+
+	void InitCard();
 
 public:
 	virtual void OnRaycast() override;

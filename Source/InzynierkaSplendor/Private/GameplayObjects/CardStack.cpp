@@ -112,3 +112,7 @@ bool ACardStack::ServerPopCardArray_Validate()
 {
 	return true;
 }
+FCardStruct ACardStack::GetStartingCard()
+{
+	return storedCards.Pop(true);
+}

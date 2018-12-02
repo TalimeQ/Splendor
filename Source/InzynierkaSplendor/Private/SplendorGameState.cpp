@@ -1,5 +1,6 @@
 #include "SplendorGameState.h"
 #include "InzynierkaSplendor/Public/Player/SplendorPlayerState.h"
+#include "UnrealMathUtility.h"
 #include "UnrealNetwork.h"
 
 
@@ -11,7 +12,7 @@ ASplendorGameState::ASplendorGameState()
 void ASplendorGameState::BeginPlay()
 {
 	Super::BeginPlay();
-
+	FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
 
 }
 void ASplendorGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {

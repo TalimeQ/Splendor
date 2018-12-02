@@ -39,6 +39,7 @@ public:
 	virtual void OnRaycast() override;
 	UFUNCTION(BlueprintCallable)
 	void ProcessReservationRequest(ASplendorPlayerController *requestingPlayer, bool isForced);
+	FCardStruct GetStartingCard();
 	virtual void BeginPlay() override;
 	/*
 	Called when client pops a reserved card from stack.
