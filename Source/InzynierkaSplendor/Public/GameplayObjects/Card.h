@@ -59,5 +59,6 @@ public:
 	void CardBuy(ASplendorPlayerController* buyingPlayer);
 	UFUNCTION(BlueprintCallable)
 		void GoldCardBuy(ASplendorPlayerController* buyingPlayer);
-	
+	UFUNCTION()
+		void UpdateCard();
 };

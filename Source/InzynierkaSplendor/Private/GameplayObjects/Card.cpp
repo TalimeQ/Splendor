@@ -38,12 +38,14 @@ void ACard::CardBuy(ASplendorPlayerController* buyingPlayer)
 	{
 		return;
 	}
-	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, false);
+	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, false, tokenStashRef);
+	buyingPlayer->CallUpdateCard(this);
 	// TODO :: Handle card destruction handle card destruction or refill
 }
 void ACard::GoldCardBuy(ASplendorPlayerController* buyingPlayer)
 {
-	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, true);
+	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, true, tokenStashRef);
+	buyingPlayer->CallUpdateCard(this);
 	// TODO :: Handle card destruction handle card destruction or refill
 }
 bool ACard::CheckIfBuyableWithGold(ASplendorPlayerController* playerRef)
@@ -74,6 +76,7 @@ void ACard::Reserve(ASplendorPlayerController* playerRef)
 	//playerState->ReserveCard(this->cardParams);
 	playerRef->ReserveCard(&(this->cardParams));
 	// TODO :: Handle card destruction handle card destruction or refill
+	playerRef->CallUpdateCard(this);
 
 }
 void  ACard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
@@ -97,4 +100,16 @@ void ACard::InitCard()
 		UE_LOG(LogTemp, Warning, TEXT("Card :: Seems like you have forgotten to set owning card stack reference for %s"),*(this->GetName()));
 	}
 	this->cardParams = ownedCardStackRef->GetStartingCard();
+}
+void ACard::UpdateCard()
+{
+	if (!ownedCardStackRef)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Card :: Seems like you have forgotten to set owning card stack reference for %s"), *(this->GetName()));
+	}
+	this->cardParams = ownedCardStackRef->GetStartingCard();
+	if(Role = ROLE_Authority)
+	{
+		VisualizeCard();
+	}
 }

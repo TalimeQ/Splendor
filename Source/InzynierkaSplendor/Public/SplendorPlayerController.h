@@ -15,6 +15,7 @@ Refactoring
 class APlayerPawn;
 class ACardStack;
 class ATokenStash;
+class ACard;
 struct FCardStruct;
 /**	
  * 
@@ -43,6 +44,8 @@ private:
 	void ServerRequestsCardPop(ACardStack* cardStackToPop);
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerCallTurnEnd();
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerUpdateCard(ACard* cardToCall);
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -54,12 +57,12 @@ public:
 	bool CheckIfCanReserve();
 	bool CheckBudget(FTokenStruct comparedAmount);
 	void ReserveCard(FCardStruct* reservedCard);
-	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold);
+	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold, ATokenStash* tokenStashRef);
 
 	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
 	void CallTurnEnd();
 	void CallRequestCardPop(ACardStack* cardStackToPop);
-	
+	void CallUpdateCard(ACard* cardToCall);
 
 protected:
 	virtual void SetupInputComponent() override;

@@ -11,6 +11,7 @@
 #include "InzynierkaSplendorGameModeBase.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "Public/GameplayObjects/Card.h"
 
 
 void ASplendorPlayerController::BeginPlay()
@@ -159,7 +160,7 @@ bool ASplendorPlayerController::CheckBudget(FTokenStruct comparedAmount)
 	// Note to self, atm cards are initialized as empty. This is not a bug, but a kinda struct protection, well at least its not NULLPTR
 	return comparedAmount <= playerBudget;
 }
-void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost, int prestige, bool bIsWithGold)
+void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost, int prestige, bool bIsWithGold, ATokenStash* tokenStashRef)
 {
 	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
 	if (!playerState) return;
@@ -168,7 +169,7 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 
 	FTokenStruct playerBonuses = playerState->GetPlayerBonuses();
 	FTokenStruct playerBudget = playerState->GetPlayerTokens();
-
+	FTokenStruct initialBudget = playerBudget;
 	cost - playerBonuses;
 	cost.NormalizeCost();
 	playerBudget - cost;
@@ -177,11 +178,16 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 	{
 		playerBudget.DeductGold(playerBudget);
 	}
-
+	// Po odjeciu od startowego budzetu nowego budzetu otrzymujemy ilosc tokenow ktore gracz wydal
+	initialBudget - playerBudget;
+	// Update stasha o wartosci od gracza
+	CallTokenStashUpdate( tokenStashRef,-initialBudget);
+	
 	playerState->SetPlayerTokens(playerBudget);
 	FTokenStruct oldBonus = playerState->GetPlayerBonuses();
 	FTokenStruct newBonus = oldBonus + cardBonus;
 	playerState->SetPlayerBonus(newBonus);
+	
 	// Jesli w tym momecie mielismy ture, to ja informujemy serwer ze chcemy ja zakonczyc
 	if (Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) this->CallTurnEnd();
 }
@@ -263,6 +269,26 @@ void ASplendorPlayerController::ServerRequestsCardPop_Implementation(ACardStack*
 	CallRequestCardPop(cardStackToPop);
 }
 bool ASplendorPlayerController::ServerRequestsCardPop_Validate(ACardStack* cardStackToPop)
+{
+	return true;
+}
+
+void  ASplendorPlayerController::CallUpdateCard(ACard* cardToCall)
+{
+	if (Role == ROLE_Authority)
+	{
+		cardToCall->UpdateCard();
+	}
+	else
+	{
+		ServerUpdateCard(cardToCall);
+	}
+}
+void ASplendorPlayerController::ServerUpdateCard_Implementation(ACard* cardToCall)
+{
+	CallUpdateCard(cardToCall);
+}
+bool ASplendorPlayerController::ServerUpdateCard_Validate(ACard* cardToCall)
 {
 	return true;
 }
