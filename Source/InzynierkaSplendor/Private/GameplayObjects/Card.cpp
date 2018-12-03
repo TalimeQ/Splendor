@@ -17,9 +17,9 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 	cardParams = FCardStruct();
-	this->InitCard();
-	if(Role = ROLE_Authority)
+	if(Role == ROLE_Authority)
 	{
+		this->InitCard();
 		this->VisualizeCard();
 	}
 
