@@ -2,6 +2,7 @@
 
 #include "SplendorPlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
+#include "Public/SplendorPlayerController.h"
 #include "UnrealNetwork.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "Public/GameplayObjects/TokenStash.h"
@@ -39,6 +40,7 @@ void ASplendorPlayerState::ReserveCard(FCardStruct CardValues)
 	tempCardPtr->cardCost = CardValues.cardCost;
 	tempCardPtr->prestige = CardValues.prestige;
 	reservedCards.Add(tempCardPtr);
+	
 	}
 }
 void ASplendorPlayerState::BuyReservedCard(int cardIndex)
@@ -78,4 +80,19 @@ void ASplendorPlayerState::SetPlayerBonus(FTokenStruct newBonus)
 }
 void  ASplendorPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ASplendorPlayerState,bIsTurn);
+	DOREPLIFETIME(ASplendorPlayerState,prestige);
+}
+void  ASplendorPlayerState::SetTurnStatus(bool bNewTurnStatus)
+{
+	if (Role == ROLE_Authority)
+	{
+		
+		this->bIsTurn = bNewTurnStatus;
+		UE_LOG(LogTemp, Warning, TEXT("Turn changed %s"),( bIsTurn ? TEXT("TRUE") : TEXT("FALSE")))
+	}
+}
+bool ASplendorPlayerState::GetTurnStatus()
+{
+	return bIsTurn;
 }

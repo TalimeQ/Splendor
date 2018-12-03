@@ -4,10 +4,12 @@
 
 #include "ChatHUD.h"
 #include "SlateBasics.h"
+
 /**
 
 *
 */
+
 class INZYNIERKASPLENDOR_API SMyChatWidget : public SCompoundWidget {
 	SLATE_BEGIN_ARGS(SMyChatWidget) : _OwnerHUD() {} // the OwnerHUD var is passed to the widget so the owner can be set.
 
@@ -30,7 +32,7 @@ public:
 	TSharedPtr< SVerticalBox > ChatBox;
 	TSharedPtr< SEditableText > ChatInput;
 
-	void OnChatTextChanged(const FText& InText); 
+	void OnChatTextChanged(const FText& InText);
 	void OnChatTextCommitted(const FText& InText, ETextCommit::Type CommitMethod);
 
 	void AddMessage(const FSChatMsg& newmessage); // the final stage, this function takes the input and does the final placement in the chatbox

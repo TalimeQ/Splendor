@@ -6,6 +6,9 @@
 #include "Public/Player/SplendorPlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/GameplayObjects/TokenStash.h"
+#include "Public/GameplayObjects/CardStruct.h"
+#include "Public/GameplayObjects/CardStack.h"
+#include "InzynierkaSplendorGameModeBase.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
@@ -15,7 +18,7 @@ void ASplendorPlayerController::BeginPlay()
 	Super::BeginPlay();
 	InitializeEdgePanningParameters();
 	UE_LOG(LogTemp, Warning, TEXT("Controller Created"));
-	
+
 
 }
 
@@ -84,6 +87,7 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 }
 void ASplendorPlayerController::OnLeftClick()
 {
+	if (!Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) return;
 	StartRaycasting();
 }
 void ASplendorPlayerController::OnRightClick()
@@ -119,6 +123,10 @@ void ASplendorPlayerController::AddTokens(FTokenStruct tokensToAdd)
 		// This is just for debug purposes :) TODO :: When the interface will be implemented, remove this.
 		playerOwnedTokens = playerStateRef->GetPlayerTokens();
 		UE_LOG(LogTemp, Warning, TEXT("Final player Token State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), playerOwnedTokens.rubyTokens, playerOwnedTokens.diamondTokens, playerOwnedTokens.emeraldTokens, playerOwnedTokens.sapphireTokens, playerOwnedTokens.onyxTokens)
+		// Zabezpiecza przed podwojnym requestem zmiany tury.
+		if (tokensToAdd.goldTokens >= 1) return;
+		// Jesli w tym momecie mielismy ture, to ja informujemy serwer ze chcemy ja zakonczyc
+		if(Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) this->CallTurnEnd();
 	}
 }
 void ASplendorPlayerController::StartRaycasting()
@@ -174,20 +182,39 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 	FTokenStruct oldBonus = playerState->GetPlayerBonuses();
 	FTokenStruct newBonus = oldBonus + cardBonus;
 	playerState->SetPlayerBonus(newBonus);
+	// Jesli w tym momecie mielismy ture, to ja informujemy serwer ze chcemy ja zakonczyc
+	if (Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) this->CallTurnEnd();
 }
 void ASplendorPlayerController::RestartPawn()
 {
 	playerPawnRef->RestartPos();
 }
+void  ASplendorPlayerController::ReserveCard(FCardStruct* reservedCard)
+{
+	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
+	if (playerState->GetTurnStatus()) this->CallTurnEnd();
+	playerState->ReserveCard(*reservedCard);
+	
+}
+
+
+/*
+Server Calls
+*/
+
+
+
 void ASplendorPlayerController::CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Wlazlem do call tokenstsah "))
+
 	if (Role == ROLE_Authority)
 	{
+	
 		tokenStash->SetTokenAmount(tokenAmount);
 	}
 	else 
 	{
+	
 		ServerCallTokenStashUpdate(  tokenStash,  tokenAmount);
 	}
 	
@@ -198,6 +225,44 @@ void  ASplendorPlayerController::ServerCallTokenStashUpdate_Implementation(AToke
 	
 }
 bool ASplendorPlayerController::ServerCallTokenStashUpdate_Validate(ATokenStash * tokenStash, FTokenStruct tokenAmount)
+{
+	return true;
+}
+void ASplendorPlayerController::CallTurnEnd()
+{
+	if (Role == ROLE_Authority)
+	{
+		Cast<AInzynierkaSplendorGameModeBase>(GetWorld()->GetAuthGameMode())->ProcessTurnInfo();
+	}
+	else
+	{
+		ServerCallTurnEnd();
+	}
+}
+void ASplendorPlayerController::ServerCallTurnEnd_Implementation()
+{
+	CallTurnEnd();
+}
+bool ASplendorPlayerController::ServerCallTurnEnd_Validate()
+{
+	return true;
+}
+void ASplendorPlayerController::CallRequestCardPop(ACardStack* cardStackToPop)
+{
+	if (Role == ROLE_Authority)
+	{
+		cardStackToPop->PopCardArray();
+	}
+	else
+	{
+		ServerRequestsCardPop(cardStackToPop);
+	}
+}
+void ASplendorPlayerController::ServerRequestsCardPop_Implementation(ACardStack* cardStackToPop)
+{
+	CallRequestCardPop(cardStackToPop);
+}
+bool ASplendorPlayerController::ServerRequestsCardPop_Validate(ACardStack* cardStackToPop)
 {
 	return true;
 }

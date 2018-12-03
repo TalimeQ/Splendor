@@ -3,6 +3,8 @@
 #include "Card.h"
 #include "Public/Player/SplendorPlayerState.h"
 #include "UnrealNetwork.h"
+#include "Public/GameplayObjects/CardStack.h"
+#include "Public/GameplayObjects/TokenStash.h"
 #include "Public/SplendorPlayerController.h"
 
 
@@ -15,6 +17,12 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 	cardParams = FCardStruct();
+	if(Role == ROLE_Authority)
+	{
+		this->InitCard();
+		this->VisualizeCard();
+	}
+
 }
 bool ACard::CheckIfBuyable(ASplendorPlayerController* playerRef)
 {
@@ -62,12 +70,31 @@ bool ACard::IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRe
 }
 void ACard::Reserve(ASplendorPlayerController* playerRef)
 {
-	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(playerRef->PlayerState);
-	playerState->ReserveCard(this->cardParams);
+	//ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(playerRef->PlayerState);
+	//playerState->ReserveCard(this->cardParams);
+	playerRef->ReserveCard(&(this->cardParams));
 	// TODO :: Handle card destruction handle card destruction or refill
 
 }
 void  ACard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ACard, cardParams);
+}
+void ACard::OnRep_VisualizeCard()
+{
+	UE_LOG(LogTemp, Warning, TEXT("REPLICATING"));
+	VisualizeCard();
+	
+}
+void ACard::VisualizeCard_Implementation()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Card Visualized"));
+}
+void ACard::InitCard()
+{
+	if (!ownedCardStackRef)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Card :: Seems like you have forgotten to set owning card stack reference for %s"),*(this->GetName()));
+	}
+	this->cardParams = ownedCardStackRef->GetStartingCard();
 }

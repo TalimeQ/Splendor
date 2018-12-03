@@ -9,7 +9,7 @@
 #include "CardStack.generated.h"
 
 class ATokenStash;
-class ASplendorPlayerState;
+
 
 class ASplendorPlayerController;
 /**
@@ -30,7 +30,7 @@ private:
 	ATokenStash* tokenStashRef;
 	void ShuffleCards();
 	void AddGold(ASplendorPlayerController *requestingPlayer);
-	void ReserveCard(ASplendorPlayerState *requestingPlayerState);
+	void ReserveCard(ASplendorPlayerController *requestingPlayer);
 public:
 	UPROPERTY(BlueprintAssignable)
 		FOnCardStackRequest OnCardStackRequest;
@@ -39,6 +39,12 @@ public:
 	virtual void OnRaycast() override;
 	UFUNCTION(BlueprintCallable)
 	void ProcessReservationRequest(ASplendorPlayerController *requestingPlayer, bool isForced);
+	FCardStruct GetStartingCard();
 	virtual void BeginPlay() override;
-	
+	/*
+	Called when client pops a reserved card from stack.
+	*/
+	void PopCardArray();
+	UFUNCTION(Server, reliable,WithValidation)
+	void ServerPopCardArray();
 };

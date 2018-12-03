@@ -1,5 +1,6 @@
 #include "CardStack.h"
 #include "UnrealMathUtility.h"
+#include "UnrealNetwork.h"
 #include "Public/SplendorPlayerController.h"
 #include "Public/GameplayObjects/TokenStash.h"
 #include "Public/Player/SplendorPlayerState.h"
@@ -34,17 +35,17 @@ void ACardStack::ProcessReservationRequest(ASplendorPlayerController *requesting
 	
 	
 	// Check if theres gold, ask if player still wants to reserve card
-	if (!tokenStashRef || !playerState) return;
+	if (!tokenStashRef ) return;
 	else if (isForced)
 	{
-		ReserveCard(playerState);
+		ReserveCard(requestingPlayer);
 		return;
 	}
 	else if (tokenStashRef->CheckIfTokensAvailable(5, 1))
 	{
 		//Reserve Card if there was gold
 		AddGold(requestingPlayer);
-		ReserveCard(playerState);
+		ReserveCard(requestingPlayer);
 
 		
 	}
@@ -76,16 +77,42 @@ void ACardStack::AddGold(ASplendorPlayerController *requestingPlayer)
 	goldToken.Add(5); // 5 is the number of gold token
 	tokenStashRef->ProcessTokenRequest(goldToken, requestingPlayer);
 }
-void ACardStack::ReserveCard(ASplendorPlayerState *requestingPlayerState)
+void ACardStack::ReserveCard(ASplendorPlayerController *requestingPlayer)
 {
-	FCardStruct cardToReserve = storedCards.Pop(true);
-	requestingPlayerState->ReserveCard(cardToReserve);
-	UE_LOG(LogTemp, Warning, TEXT("Cards remaining %d"), storedCards.Num());
-	if (storedCards.Num() <= 0)
-	{
-		this->Destroy();
-	}
+	// We will ask server to pop it with removal instead 
+	FCardStruct cardToReserve = storedCards.Pop(false);
+	requestingPlayer->ReserveCard(&cardToReserve);
+	requestingPlayer->CallRequestCardPop(this);
+
 }
 void  ACardStack::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ACardStack, storedCards);
+}
+void ACardStack::PopCardArray()
+{
+	if (Role != ROLE_Authority)
+	{
+		ServerPopCardArray();
+	}
+	else
+	{
+		this->storedCards.Pop(true);
+		if (storedCards.Num() <= 0)
+		{
+			this->Destroy();
+		}
+	}
+}
+void ACardStack::ServerPopCardArray_Implementation()
+{
+	PopCardArray();
+}
+bool ACardStack::ServerPopCardArray_Validate()
+{
+	return true;
+}
+FCardStruct ACardStack::GetStartingCard()
+{
+	return storedCards.Pop(true);
 }

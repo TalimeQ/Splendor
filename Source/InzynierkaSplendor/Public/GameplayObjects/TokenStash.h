@@ -18,9 +18,26 @@ class INZYNIERKASPLENDOR_API ATokenStash : public AInteractable
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing=OnRep_VisualizeTokens)
 	FTokenStruct tokenPool;
 	virtual void BeginPlay() override;
+
+	// For visuals ;)
+	UPROPERTY(EditInstanceOnly,  Category = "Visuals")
+		AActor* diamondTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* rubyTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* goldTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* emeraldTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* sapphireTokenBottom;
+	UPROPERTY(EditInstanceOnly, Category = "Visuals")
+		AActor* onyxTokenBottom;
+	UFUNCTION()
+	void OnRep_VisualizeTokens();
+	void VisualizeTokens();
 
 public:
 

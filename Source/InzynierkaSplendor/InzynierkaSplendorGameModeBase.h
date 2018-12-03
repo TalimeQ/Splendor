@@ -9,12 +9,18 @@
 /**
  * 
  */
+class ASplendorGameState;
 UCLASS()
 class INZYNIERKASPLENDOR_API AInzynierkaSplendorGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-	
-	
-	
+public:
+	AInzynierkaSplendorGameModeBase();
+	UFUNCTION(BlueprintCallable)
+	void ProcessTurnInfo();
+private:
+	virtual void BeginPlay() override;
+	ASplendorGameState* stateRef;
+	UFUNCTION(reliable, server, WithValidation)
+	void ServerProcessTurnInfo();
 };
