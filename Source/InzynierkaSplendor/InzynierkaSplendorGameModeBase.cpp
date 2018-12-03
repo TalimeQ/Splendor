@@ -2,15 +2,15 @@
 
 #include "InzynierkaSplendorGameModeBase.h"
 #include "UnrealNetwork.h"
+#include "Public/ChatHUD.h"
+#include "Public/Player/SplendorPlayerState.h"
 #include "InzynierkaSplendor/Public/SplendorGameState.h"
-#include "ChatHUD.h"
-#include "ChatPlayerState.h"
 
 AInzynierkaSplendorGameModeBase::AInzynierkaSplendorGameModeBase()
 {
 	// assign our custom classes above their parents
 	HUDClass = AChatHUD::StaticClass();
-	PlayerStateClass = AChatPlayerState::StaticClass();
+	PlayerStateClass = ASplendorPlayerState::StaticClass();
 
 	/* use this is you wish to extend the c++ into a bp and assign the bp to the class
 	static ConstructorHelpers::FClassFinder<AMyHUD> hudclassobj(TEXT("Blueprint'/MyHUD.MyHUD_C'"));

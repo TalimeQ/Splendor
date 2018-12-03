@@ -6,6 +6,9 @@
 #include "UnrealNetwork.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "Public/GameplayObjects/TokenStash.h"
+#include "Public/ChatHUD.h"
+#include "Public/SMyChatWidget.h"
+
 
 ASplendorPlayerState::ASplendorPlayerState()
 {
@@ -95,4 +98,33 @@ void  ASplendorPlayerState::SetTurnStatus(bool bNewTurnStatus)
 bool ASplendorPlayerState::GetTurnStatus()
 {
 	return bIsTurn;
+}
+
+bool ASplendorPlayerState::UserChatRPC_Validate(const FSChatMsg& newmessage)
+{
+	return true;
+}
+void ASplendorPlayerState::UserChatRPC_Implementation(const FSChatMsg& newmessage)
+{
+	UserChat(newmessage);
+}
+bool ASplendorPlayerState::UserChat_Validate(const FSChatMsg& newmessage)
+{
+	return true;
+}
+void ASplendorPlayerState::UserChat_Implementation(const FSChatMsg& newmessage)
+{
+	APlayerController* MyCon;
+	AChatHUD* MyHud;
+
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator) // find all controllers
+	{
+		MyCon = Cast<ASplendorPlayerController>(*Iterator);
+		if (MyCon)
+		{
+			MyHud = Cast<AChatHUD>(MyCon->GetHUD());
+			if (MyHud && MyHud->MyUIWidget.IsValid())
+				MyHud->MyUIWidget->AddMessage(newmessage); // place the chat message on this player controller
+		}
+	}
 }

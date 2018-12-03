@@ -2,9 +2,6 @@
 #include "InzynierkaSplendor/Public/Player/SplendorPlayerState.h"
 #include "UnrealMathUtility.h"
 #include "UnrealNetwork.h"
-#include "InzynierkaSplendor.h"
-#include "ChatHUD.h"
-#include "SMyChatWidget.h"
 
 
 
@@ -89,33 +86,4 @@ void ASplendorGameState::ServerInitialize_Implementation()
 bool ASplendorGameState::ServerInitialize_Validate()
 {
 	return true;
-}
-
-bool ASplendorGameState::UserChatRPC_Validate(const FSChatMsg& newmessage) {
-	return true;
-}
-
-void ASplendorGameState::UserChatRPC_Implementation(const FSChatMsg& newmessage) {
-	UserChat(newmessage);
-}
-
-bool ASplendorGameState::UserChat_Validate(const FSChatMsg& newmessage) {
-	return true;
-}
-
-
-
-void ASplendorGameState::UserChat_Implementation(const FSChatMsg& newmessage) {
-	APlayerController* MyCon;
-	AChatHUD* MyHud;
-
-	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)  // find all controllers 
-	{
-		MyCon = Cast<APlayerController>(*Iterator);
-		if (MyCon)
-		{
-			MyHud = Cast<AChatHUD>(MyCon->GetHUD());
-			if (MyHud && MyHud->MyUIWidget.IsValid()) MyHud->MyUIWidget->AddMessage(newmessage); // place the chat message on this player controller 
-		}
-	}
 }
