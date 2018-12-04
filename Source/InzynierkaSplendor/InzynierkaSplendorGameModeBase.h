@@ -15,6 +15,7 @@ class INZYNIERKASPLENDOR_API AInzynierkaSplendorGameModeBase : public AGameModeB
 {
 	GENERATED_BODY()
 public:
+	AInzynierkaSplendorGameModeBase();
 	UFUNCTION(BlueprintCallable)
 	void ProcessTurnInfo();
 private:
