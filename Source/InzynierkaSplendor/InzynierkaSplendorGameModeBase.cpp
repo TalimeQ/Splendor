@@ -2,10 +2,7 @@
 
 #include "InzynierkaSplendorGameModeBase.h"
 #include "UnrealNetwork.h"
-<<<<<<< HEAD
 #include "InzynierkaSplendor/Public/SplendorGameState.h"
-
-=======
 #include "Public/ChatHUD.h"
 #include "Public/Player/SplendorPlayerState.h"
 #include "InzynierkaSplendor/Public/SplendorGameState.h"
@@ -27,7 +24,6 @@ AInzynierkaSplendorGameModeBase::AInzynierkaSplendorGameModeBase()
 	*/
 }
 
->>>>>>> Kwit
 void AInzynierkaSplendorGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
