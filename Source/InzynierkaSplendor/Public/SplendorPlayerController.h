@@ -46,7 +46,6 @@ private:
 	void ServerCallTurnEnd();
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerUpdateCard(ACard* cardToCall);
-
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInput();

@@ -29,7 +29,6 @@ void ASplendorPlayerController::Tick(float DeltaTime)
 	if (!playerPawnRef) return;
 	MovePawn();
 
-
 }
 
 
@@ -109,6 +108,7 @@ void ASplendorPlayerController::ToggleInput()
 	{
 		this->EnableInput(this);
 		bIsInputEnabled = true;
+		
 	}
 	
 	
