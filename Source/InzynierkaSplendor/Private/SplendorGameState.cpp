@@ -21,7 +21,8 @@ void ASplendorGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > 
 }
 void  ASplendorGameState::OnRep_CurrentState()
 {
-
+	if (CurrentState != ECurrentGameState::EGameOver) return;
+	GameFinalizer();
 }
 void ASplendorGameState::RandomizeTurnOrder()
 {
@@ -53,14 +54,34 @@ void ASplendorGameState::NextTurn()
 {
 
 	if (Role != ROLE_Authority) return;
-	if(CurrentState == ECurrentGameState::EPlaying || ECurrentGameState::ELastTurn)
+	if(CurrentState == ECurrentGameState::EPlaying )
 	{ 
+		if (playerTurnOrder[currentPlayer]->GetPlayerPrestige() >= 15)
+		{
+			bLastTurn = true;
+			playerTurnOrder[currentPlayer]->SetFinished();
+		}
+		else if (bLastTurn)
+		{
+			playerTurnOrder[currentPlayer]->SetFinished();
+		}
 		playerTurnOrder[currentPlayer]->SetTurnStatus(false);
+
 		currentPlayer++;
+
 		if (currentPlayer >= playerTurnOrder.Num()) currentPlayer = 0;
+		if (playerTurnOrder[currentPlayer]->GetFinishedStatus())
+		{
+			// Player is already finished after getting 15+ prestige
+			// Now game should finish
+			CurrentState = ECurrentGameState::EGameOver;
+			if (Role = ROLE_Authority) this->OnRep_CurrentState();
+			return;
+		}
 		playerTurnOrder[currentPlayer]->SetTurnStatus(true);
 		UE_LOG(LogTemp, Warning, TEXT("Next Turn current player %d"),currentPlayer);
 	}
+
 }
 void ASplendorGameState::Initialize()
 {
@@ -86,4 +107,8 @@ void ASplendorGameState::ServerInitialize_Implementation()
 bool ASplendorGameState::ServerInitialize_Validate()
 {
 	return true;
+}
+void ASplendorGameState::GameFinalizer_Implementation()
+{
+	UE_LOG(LogTemp, Error, TEXT("GRA SKONCZONA"))
 }

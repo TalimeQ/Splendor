@@ -33,7 +33,10 @@ private:
 		int prestige;
 		UPROPERTY(Replicated)
 		bool bIsTurn = false;
-
+		UFUNCTION(Server, Reliable, WithValidation)
+		void ServerSetPlayerPrestige(int newPrestige);
+		UPROPERTY(Replicated)
+		bool bIsFinished = false;
 public:
 	ASplendorPlayerState();
 	FTokenStruct GetPlayerTokens();
@@ -48,9 +51,12 @@ public:
 	void SetPlayerPrestige(int newPrestige);
 	void SetTurnStatus(bool bNewTurnStatus);
 	bool GetTurnStatus();
+	void SetFinished();
+	bool GetFinishedStatus();
 
 	UFUNCTION(Server, Reliable, WithValidation) // for player to player rpc you need to first call the message on the server
 		virtual void UserChatRPC(const FSChatMsg& newmessage); // first rpc for the server
 	UFUNCTION(NetMulticast, Reliable, WithValidation) // then the server calls the function with a multicast that executes on all clients and the server
 		virtual void UserChat(const FSChatMsg& newmessage); // second rpc for all the clients
+	
 };

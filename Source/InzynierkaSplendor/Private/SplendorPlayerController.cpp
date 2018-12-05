@@ -88,7 +88,7 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 }
 void ASplendorPlayerController::OnLeftClick()
 {
-	if (!Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) return;
+	if (!Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus() || Cast<ASplendorPlayerState>(this->PlayerState)->GetFinishedStatus()) return;
 	StartRaycasting();
 }
 void ASplendorPlayerController::OnRightClick()
