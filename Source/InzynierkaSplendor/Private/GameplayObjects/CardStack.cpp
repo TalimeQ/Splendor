@@ -6,11 +6,18 @@
 #include "Public/Player/SplendorPlayerState.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
+ACardStack::ACardStack()
+{
+	
+	 FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
+	 ShuffleCards();
+	 copyOfStoredCards = storedCards;
+}
 void ACardStack::BeginPlay()
 {
 	Super::BeginPlay();
-	FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
-	ShuffleCards();
+
+
 }
 void ACardStack::OnRaycast()
 {
@@ -115,4 +122,16 @@ bool ACardStack::ServerPopCardArray_Validate()
 FCardStruct ACardStack::GetStartingCard()
 {
 	return storedCards.Pop(true);
+}
+int ACardStack::GetCardStackCount()
+{
+	return storedCards.Num();
+}
+int ACardStack::GetInitialCardStackCount()
+{
+	return copyOfStoredCards.Num();
+}
+void ACardStack::RequestReset()
+{
+	storedCards = copyOfStoredCards;
 }

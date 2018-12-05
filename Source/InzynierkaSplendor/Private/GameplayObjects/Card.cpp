@@ -3,6 +3,7 @@
 #include "Card.h"
 #include "Public/Player/SplendorPlayerState.h"
 #include "UnrealNetwork.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "Public/GameplayObjects/TokenStash.h"
 #include "Public/SplendorPlayerController.h"
@@ -17,9 +18,10 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 	cardParams = FCardStruct();
+	Cast<ASplendorPlayerController>(this->GetWorld()->GetFirstPlayerController())->CallInitCard(this);
 	if(Role == ROLE_Authority)
 	{
-		this->InitCard();
+		
 		this->VisualizeCard();
 	}
 
@@ -102,7 +104,13 @@ void ACard::InitCard()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Card :: Seems like you have forgotten to set owning card stack reference for %s"),*(this->GetName()));
 	}
+	if (ownedCardStackRef->GetCardStackCount() <= ownedCardStackRef->GetInitialCardStackCount() - cardsInTier)
+	{
+		ownedCardStackRef->RequestReset();
+	}
 	this->cardParams = ownedCardStackRef->GetStartingCard();
+	VisualizeCard();
+
 }
 void ACard::UpdateCard()
 {
