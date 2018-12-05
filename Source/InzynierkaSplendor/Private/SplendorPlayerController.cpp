@@ -292,3 +292,22 @@ bool ASplendorPlayerController::ServerUpdateCard_Validate(ACard* cardToCall)
 {
 	return true;
 }
+void ASplendorPlayerController::CallInitCard(ACard* cardToCall)
+{
+	if (Role == ROLE_Authority)
+	{
+		cardToCall->InitCard();
+	}
+	else
+	{
+		ServerInitCard(cardToCall);
+	}
+} 
+void ASplendorPlayerController::ServerInitCard_Implementation(ACard* cardToCall)
+{
+	CallInitCard(cardToCall);
+}
+bool ASplendorPlayerController::ServerInitCard_Validate(ACard* cardToCall)
+{
+	return true;
+}

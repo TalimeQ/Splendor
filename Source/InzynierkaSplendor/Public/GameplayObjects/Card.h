@@ -27,7 +27,7 @@ private:
 		bool IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRef);
 		
 protected:
-	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_VisualizeCard, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_VisualizeCard, BlueprintReadOnly, Replicated)
 		FCardStruct cardParams;
 	UPROPERTY(BlueprintAssignable)
 		FOnCardRequest OnCardRequest;
@@ -37,7 +37,8 @@ protected:
 		ATokenStash* tokenStashRef;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		ACardStack * ownedCardStackRef;
-
+	UPROPERTY(EditDefaultsOnly)
+		int cardsInTier = 3;
 	UFUNCTION()
 		 void  OnRep_VisualizeCard();
 	UFUNCTION(BlueprintNativeEvent)
@@ -45,20 +46,25 @@ protected:
 	void VisualizeCard();
 	virtual void VisualizeCard_Implementation();
 
-	void InitCard();
+	
+	
 
 public:
 	virtual void OnRaycast() override;
 	UFUNCTION(BlueprintCallable)
-	void Reserve(ASplendorPlayerController* playerRef);
+		void Reserve(ASplendorPlayerController* playerRef);
 	UFUNCTION(BlueprintCallable)
-	bool CheckIfBuyable(ASplendorPlayerController* playerRef);
+		bool CheckIfBuyable(ASplendorPlayerController* playerRef);
 	UFUNCTION(BlueprintCallable)
-	bool CheckIfBuyableWithGold(ASplendorPlayerController* playerRef);
+		bool CheckIfBuyableWithGold(ASplendorPlayerController* playerRef);
 	UFUNCTION(BlueprintCallable)
-	void CardBuy(ASplendorPlayerController* buyingPlayer);
+		void CardBuy(ASplendorPlayerController* buyingPlayer);
 	UFUNCTION(BlueprintCallable)
 		void GoldCardBuy(ASplendorPlayerController* buyingPlayer);
+	UFUNCTION(BlueprintCallable)
+		void ResetCardParams(FCardStruct newCardParams);
 	UFUNCTION()
 		void UpdateCard();
+	UFUNCTION()
+		void InitCard();
 };

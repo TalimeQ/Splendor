@@ -46,6 +46,8 @@ private:
 	void ServerCallTurnEnd();
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerUpdateCard(ACard* cardToCall);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerInitCard(ACard* cardToCall);
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInput();
@@ -62,6 +64,7 @@ public:
 	void CallTurnEnd();
 	void CallRequestCardPop(ACardStack* cardStackToPop);
 	void CallUpdateCard(ACard* cardToCall);
+	void CallInitCard(ACard* cardToCall);
 
 protected:
 	virtual void SetupInputComponent() override;

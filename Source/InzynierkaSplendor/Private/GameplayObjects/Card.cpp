@@ -3,6 +3,7 @@
 #include "Card.h"
 #include "Public/Player/SplendorPlayerState.h"
 #include "UnrealNetwork.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "Public/GameplayObjects/TokenStash.h"
 #include "Public/SplendorPlayerController.h"
@@ -17,9 +18,10 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 	cardParams = FCardStruct();
+	Cast<ASplendorPlayerController>(this->GetWorld()->GetFirstPlayerController())->CallInitCard(this);
 	if(Role == ROLE_Authority)
 	{
-		this->InitCard();
+		
 		this->VisualizeCard();
 	}
 
@@ -59,10 +61,13 @@ bool ACard::IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRe
 	FTokenStruct playerBudget = Cast<ASplendorPlayerState>(playerRef->PlayerState)->GetPlayerBudget();
 	int tempGoldStorage = playerBudget.goldTokens;
 	playerBudget.goldTokens = 0;
-	FTokenStruct compared = cost - playerBudget;
-	compared.Count();
-	if (compared.tokensTotal <= tempGoldStorage)
+    cost - playerBudget;
+	cost.Count();
+	UE_LOG(LogTemp, Warning, TEXT("Final player Token State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), cost.rubyTokens, cost.diamondTokens, cost.emeraldTokens, cost.sapphireTokens, cost.onyxTokens)
+	UE_LOG(LogTemp, Warning, TEXT("%d"), cost.tokensTotal);
+	if (cost.tokensTotal <= tempGoldStorage)
 	{
+	
 		return true;
 	}
 	else
@@ -99,7 +104,13 @@ void ACard::InitCard()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Card :: Seems like you have forgotten to set owning card stack reference for %s"),*(this->GetName()));
 	}
+	if (ownedCardStackRef->GetCardStackCount() <= ownedCardStackRef->GetInitialCardStackCount() - cardsInTier)
+	{
+		ownedCardStackRef->RequestReset();
+	}
 	this->cardParams = ownedCardStackRef->GetStartingCard();
+	VisualizeCard();
+
 }
 void ACard::UpdateCard()
 {
@@ -112,4 +123,8 @@ void ACard::UpdateCard()
 	{
 		VisualizeCard();
 	}
+}
+void  ACard::ResetCardParams(FCardStruct newCardParams)
+{
+	cardParams = newCardParams;
 }
