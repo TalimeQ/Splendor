@@ -27,7 +27,7 @@ private:
 		bool IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRef);
 		
 protected:
-	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_VisualizeCard, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_VisualizeCard, BlueprintReadOnly, Replicated)
 		FCardStruct cardParams;
 	UPROPERTY(BlueprintAssignable)
 		FOnCardRequest OnCardRequest;
@@ -46,6 +46,7 @@ protected:
 	virtual void VisualizeCard_Implementation();
 
 	void InitCard();
+	
 
 public:
 	virtual void OnRaycast() override;
@@ -59,6 +60,8 @@ public:
 	void CardBuy(ASplendorPlayerController* buyingPlayer);
 	UFUNCTION(BlueprintCallable)
 		void GoldCardBuy(ASplendorPlayerController* buyingPlayer);
+	UFUNCTION(BlueprintCallable)
+		void ResetCardParams(FCardStruct newCardParams);
 	UFUNCTION()
 		void UpdateCard();
 };

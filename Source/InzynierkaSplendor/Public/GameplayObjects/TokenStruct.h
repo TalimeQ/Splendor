@@ -163,7 +163,7 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 	}
 	int Count()
 	{
-		int tokensTotal = emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
+	    tokensTotal = emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
 		return tokensTotal;
 	}
 	void NormalizeCost()
