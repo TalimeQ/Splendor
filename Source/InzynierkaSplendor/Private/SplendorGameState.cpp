@@ -8,6 +8,7 @@
 ASplendorGameState::ASplendorGameState()
 {
 	this->CurrentState = ECurrentGameState::EUnknown;
+	FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
 }
 void ASplendorGameState::BeginPlay()
 {
@@ -26,6 +27,7 @@ void  ASplendorGameState::OnRep_CurrentState()
 }
 void ASplendorGameState::RandomizeTurnOrder()
 {
+	FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
 	if (Role != ROLE_Authority) return;
 	for (uint32 i = PlayerArray.Num() - 1; i > 0; i--)
 	{

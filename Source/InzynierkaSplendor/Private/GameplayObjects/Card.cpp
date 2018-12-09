@@ -132,6 +132,7 @@ void ACard::UpdateCard()
 void  ACard::ResetCardParams(FCardStruct newCardParams)
 {
 	cardParams = newCardParams;
+	VisualizeCard();
 }
 FCardStruct  ACard::GetCardParams()
 {
