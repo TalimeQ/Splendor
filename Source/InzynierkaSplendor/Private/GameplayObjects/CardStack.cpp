@@ -122,6 +122,7 @@ bool ACardStack::ServerPopCardArray_Validate()
 FCardStruct ACardStack::GetStartingCard()
 {
 	return storedCards.Pop(true);
+	if (storedCards.Num() <= 0) this->Destroy();
 }
 int ACardStack::GetCardStackCount()
 {

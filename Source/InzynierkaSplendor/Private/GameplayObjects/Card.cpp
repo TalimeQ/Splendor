@@ -122,6 +122,7 @@ void ACard::UpdateCard()
 	if (!ownedCardStackRef)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Card :: Seems like you have forgotten to set owning card stack reference for %s"), *(this->GetName()));
+		this->Destroy();
 	}
 	this->cardParams = ownedCardStackRef->GetStartingCard();
 	if(Role = ROLE_Authority)
