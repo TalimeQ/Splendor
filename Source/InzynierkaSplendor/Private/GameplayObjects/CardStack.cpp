@@ -9,15 +9,15 @@
 ACardStack::ACardStack()
 {
 	
-	 FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
-	 ShuffleCards();
+
+	
 	 copyOfStoredCards = storedCards;
 }
 void ACardStack::BeginPlay()
 {
 	Super::BeginPlay();
-
-
+	FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
+	ShuffleCards();
 }
 void ACardStack::OnRaycast()
 {
@@ -134,4 +134,5 @@ int ACardStack::GetInitialCardStackCount()
 void ACardStack::RequestReset()
 {
 	storedCards = copyOfStoredCards;
+	ShuffleCards();
 }

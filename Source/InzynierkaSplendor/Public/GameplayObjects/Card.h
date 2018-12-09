@@ -67,4 +67,6 @@ public:
 		void UpdateCard();
 	UFUNCTION()
 		void InitCard();
+	UFUNCTION()
+		FCardStruct GetCardParams();
 };

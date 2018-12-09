@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "GameplayObjects/TokenStruct.h"
+#include "GameplayObjects/CardStruct.h"
 /*
 Refactoring
 */
@@ -48,6 +49,9 @@ private:
 	void ServerUpdateCard(ACard* cardToCall);
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerInitCard(ACard* cardToCall);
+	UFUNCTION(Client, Reliable)
+	void SetCardParamsOnClient(ACard* cardToCall,FCardStruct cardParams);
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleInput();

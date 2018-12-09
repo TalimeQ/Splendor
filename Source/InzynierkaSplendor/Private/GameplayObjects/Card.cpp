@@ -18,11 +18,16 @@ void ACard::BeginPlay()
 {
 	Super::BeginPlay();
 	cardParams = FCardStruct();
-	Cast<ASplendorPlayerController>(this->GetWorld()->GetFirstPlayerController())->CallInitCard(this);
+	//
+
 	if(Role == ROLE_Authority)
 	{
-		
+		this->InitCard();
 		this->VisualizeCard();
+	}
+	else
+	{
+		Cast<ASplendorPlayerController>(this->GetWorld()->GetFirstPlayerController())->CallInitCard(this);
 	}
 
 }
@@ -127,4 +132,8 @@ void ACard::UpdateCard()
 void  ACard::ResetCardParams(FCardStruct newCardParams)
 {
 	cardParams = newCardParams;
+}
+FCardStruct  ACard::GetCardParams()
+{
+	return cardParams;
 }

@@ -6,7 +6,6 @@
 #include "Public/Player/SplendorPlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/GameplayObjects/TokenStash.h"
-#include "Public/GameplayObjects/CardStruct.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "InzynierkaSplendorGameModeBase.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
@@ -296,7 +295,8 @@ void ASplendorPlayerController::CallInitCard(ACard* cardToCall)
 {
 	if (Role == ROLE_Authority)
 	{
-		cardToCall->InitCard();
+		FCardStruct cardParams = cardToCall->GetCardParams();
+		this->SetCardParamsOnClient(cardToCall,cardParams);
 	}
 	else
 	{
@@ -310,4 +310,8 @@ void ASplendorPlayerController::ServerInitCard_Implementation(ACard* cardToCall)
 bool ASplendorPlayerController::ServerInitCard_Validate(ACard* cardToCall)
 {
 	return true;
+}
+void ASplendorPlayerController::SetCardParamsOnClient_Implementation(ACard* cardToCall, FCardStruct cardParams)
+{
+	cardToCall->ResetCardParams(cardParams);
 }
