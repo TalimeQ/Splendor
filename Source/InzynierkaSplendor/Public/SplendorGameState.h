@@ -37,6 +37,7 @@ private:
 		void InitializePlayerArray();
 		int currentPlayer = 0;
 		bool bLastTurn = false;
+		void FinalizeTurn();
 public:
 		ASplendorGameState();
 		UPROPERTY(Replicated, BlueprintReadWrite, Category = "Game Variables")

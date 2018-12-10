@@ -26,6 +26,8 @@ public:
 	AInzynierkaSplendorGameModeBase();
 	UFUNCTION(BlueprintCallable)
 	void ProcessTurnInfo();
+	TArray<FTokenStruct> GetAristocrats();
+	void BuyAristocrat(int arrayNum);
 private:
 	
 	virtual void BeginPlay() override;
@@ -37,4 +39,6 @@ protected:
 	TArray<FTokenStruct> aristocratRequirements;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<APatronCardVisualizer*> aristocratCardsRequirements;
+	UFUNCTION(BlueprintImplementableEvent)
+		void RemoveCard(int cardNumber);
 };

@@ -1,5 +1,7 @@
 #include "SplendorGameState.h"
 #include "InzynierkaSplendor/Public/Player/SplendorPlayerState.h"
+#include "GameplayObjects/TokenStruct.h"
+#include "InzynierkaSplendorGameModeBase.h"
 #include "UnrealMathUtility.h"
 #include "UnrealNetwork.h"
 
@@ -56,6 +58,7 @@ void ASplendorGameState::NextTurn()
 {
 
 	if (Role != ROLE_Authority) return;
+	FinalizeTurn();
 	if(CurrentState == ECurrentGameState::EPlaying )
 	{ 
 		if (playerTurnOrder[currentPlayer]->GetPlayerPrestige() >= 15)
@@ -113,4 +116,19 @@ bool ASplendorGameState::ServerInitialize_Validate()
 void ASplendorGameState::GameFinalizer_Implementation()
 {
 	UE_LOG(LogTemp, Error, TEXT("GRA SKONCZONA"))
+}
+void ASplendorGameState::FinalizeTurn()
+{
+	AInzynierkaSplendorGameModeBase* gamemodeRef = Cast<AInzynierkaSplendorGameModeBase>(this->GameModeClass);
+	TArray<FTokenStruct> comparedArray;
+	FTokenStruct comparedBonuses = playerTurnOrder[currentPlayer]->GetPlayerBonuses();
+	comparedArray.Append(gamemodeRef->GetAristocrats() ) ;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (comparedArray[i] <= comparedBonuses)
+		{
+			gamemodeRef->BuyAristocrat(i);
+		}
+	}
 }
