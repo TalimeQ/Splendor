@@ -21,12 +21,13 @@ class INZYNIERKASPLENDOR_API AInzynierkaSplendorGameModeBase : public AGameModeB
 {
 	GENERATED_BODY()
 public:
-	
-	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		TArray<APatronCardVisualizer*> aristocratCardsRequirements;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+		TArray<FTokenStruct> aristocratRequirements;
 	AInzynierkaSplendorGameModeBase();
 	UFUNCTION(BlueprintCallable)
 	void ProcessTurnInfo();
-	TArray<FTokenStruct> GetAristocrats();
 	void BuyAristocrat(int arrayNum);
 private:
 	
@@ -35,10 +36,8 @@ private:
 	UFUNCTION(reliable, server, WithValidation)
 	void ServerProcessTurnInfo();
 protected:
-	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly)
-	TArray<FTokenStruct> aristocratRequirements;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TArray<APatronCardVisualizer*> aristocratCardsRequirements;
+
+	
 	UFUNCTION(BlueprintImplementableEvent)
 		void RemoveCard(int cardNumber);
 };

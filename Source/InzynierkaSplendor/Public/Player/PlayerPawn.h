@@ -19,6 +19,7 @@ class INZYNIERKASPLENDOR_API APlayerPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	APlayerPawn();
+	UFUNCTION(BlueprintCallable)
 	void ChangePosition(FVector newLocationVector);
 	void RestartPos();
 protected:

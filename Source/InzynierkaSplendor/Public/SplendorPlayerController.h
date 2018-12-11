@@ -29,7 +29,7 @@ private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	bool bIsInputEnabled = true;
-	void MovePawn();
+
 	void InitializeEdgePanningParameters();
 	void StartRaycasting();
 	void RestartPawn();
@@ -76,6 +76,6 @@ protected:
 	void OnLeftClick();
 	UFUNCTION(BlueprintCallable)
 	void OnRightClick();
-	
-	
+	UFUNCTION(BlueprintCallable)
+	void MovePawn(FVector cameraDirVector);
 };

@@ -50,6 +50,7 @@ public:
 	int GetPlayerPrestige();
 	void SetPlayerPrestige(int newPrestige);
 	void SetTurnStatus(bool bNewTurnStatus);
+	UFUNCTION(BlueprintPure)
 	bool GetTurnStatus();
 	void SetFinished();
 	bool GetFinishedStatus();

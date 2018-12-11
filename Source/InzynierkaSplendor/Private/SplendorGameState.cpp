@@ -119,14 +119,17 @@ void ASplendorGameState::GameFinalizer_Implementation()
 }
 void ASplendorGameState::FinalizeTurn()
 {
-	AInzynierkaSplendorGameModeBase* gamemodeRef = Cast<AInzynierkaSplendorGameModeBase>(this->GameModeClass);
-	TArray<FTokenStruct> comparedArray;
+	AInzynierkaSplendorGameModeBase* gamemodeRef = Cast<AInzynierkaSplendorGameModeBase>(this->AuthorityGameMode);
+	if (!gamemodeRef)
+	{
+		
+		UE_LOG(LogTemp, Error, TEXT("FINALIZE TURN :: NULLPTR"))
+		return;
+	}
 	FTokenStruct comparedBonuses = playerTurnOrder[currentPlayer]->GetPlayerBonuses();
-	comparedArray.Append(gamemodeRef->GetAristocrats() ) ;
-
 	for (int i = 0; i < 4; i++)
 	{
-		if (comparedArray[i] <= comparedBonuses)
+		if (gamemodeRef->aristocratRequirements[i] <= comparedBonuses)
 		{
 			gamemodeRef->BuyAristocrat(i);
 		}

@@ -25,9 +25,9 @@ void ASplendorPlayerController::BeginPlay()
 void ASplendorPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (!playerPawnRef) return;
-	MovePawn();
-
+//if (!playerPawnRef) return;
+//	MovePawn();
+//	GetCameraPanDirection();
 }
 
 
@@ -51,9 +51,10 @@ void ASplendorPlayerController::SetupInputComponent()
 	InputEnabled();
 	bIsInputEnabled = true;
 }
-void ASplendorPlayerController::MovePawn()
+void ASplendorPlayerController::MovePawn(FVector cameraDirVector)
 {
-	FVector cameraDirVector = GetCameraPanDirection();
+	//FVector cameraDirVector = GetCameraPanDirection();
+
 	if (cameraDirVector == FVector(0, 0, 0)) return;
 	playerPawnRef->ChangePosition(cameraDirVector);
 
@@ -64,8 +65,10 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 	float mouseY;
 	float CameraDirX = 0;
 	float CameraDirY = 0;
-
+	
 	GetMousePosition(mouseX, mouseY);
+	UE_LOG(LogTemp, Warning, TEXT("Positions %f, %f"),mouseX,mouseY);
+	
 	if (mouseX <= margin)
 	{
 		CameraDirY = -1;
@@ -82,6 +85,7 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 	{
 		CameraDirX = -1;
 	}
+
 	return  FVector(CameraDirX, CameraDirY, 0);
 }
 void ASplendorPlayerController::OnLeftClick()

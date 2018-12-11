@@ -54,10 +54,6 @@ bool  AInzynierkaSplendorGameModeBase::ServerProcessTurnInfo_Validate()
 {
 	return true;
 }
-TArray<FTokenStruct>  AInzynierkaSplendorGameModeBase::GetAristocrats()
-{
-	return this->aristocratRequirements;
-}
 void  AInzynierkaSplendorGameModeBase::BuyAristocrat(int arrayNum)
 {
 	this->aristocratRequirements[arrayNum].setParams(   FTokenStruct(99, 99));
