@@ -128,6 +128,7 @@ void  ATokenStash::SetTokenAmount(FTokenStruct deductedTokenAmount)
 	
 	if (Role == ROLE_Authority)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Servered Tokens D: %d , E: %d, S: %d, O: %d, R: %d "), deductedTokenAmount.diamondTokens, deductedTokenAmount.emeraldTokens, deductedTokenAmount.sapphireTokens, deductedTokenAmount.onyxTokens, deductedTokenAmount.rubyTokens)
 		this->tokenPool - deductedTokenAmount;
 		// Updates visualy
 		this->VisualizeTokens();

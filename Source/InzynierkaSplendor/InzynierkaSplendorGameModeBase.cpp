@@ -2,6 +2,9 @@
 
 #include "InzynierkaSplendorGameModeBase.h"
 #include "UnrealNetwork.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "InzynierkaSplendor/Public/SplendorGameState.h"
+#include "GameplayObjects/PatronCardVisualizer.h"
 #include "Public/ChatHUD.h"
 #include "Public/Player/SplendorPlayerState.h"
 #include "InzynierkaSplendor/Public/SplendorGameState.h"
@@ -29,6 +32,7 @@ void AInzynierkaSplendorGameModeBase::BeginPlay()
 	this->stateRef = Cast<ASplendorGameState>(this->GameState);
 	this->stateRef->Initialize();
 	UE_LOG(LogTemp, Warning, TEXT("Begin Play"));
+	
 }
 void  AInzynierkaSplendorGameModeBase::ProcessTurnInfo()
 {
@@ -50,4 +54,7 @@ bool  AInzynierkaSplendorGameModeBase::ServerProcessTurnInfo_Validate()
 {
 	return true;
 }
-
+void  AInzynierkaSplendorGameModeBase::BuyAristocrat(int arrayNum)
+{
+	this->aristocratRequirements[arrayNum].setParams(   FTokenStruct(99, 99));
+}

@@ -1,5 +1,7 @@
 #include "SplendorGameState.h"
 #include "InzynierkaSplendor/Public/Player/SplendorPlayerState.h"
+#include "GameplayObjects/TokenStruct.h"
+#include "InzynierkaSplendorGameModeBase.h"
 #include "UnrealMathUtility.h"
 #include "UnrealNetwork.h"
 
@@ -8,6 +10,7 @@
 ASplendorGameState::ASplendorGameState()
 {
 	this->CurrentState = ECurrentGameState::EUnknown;
+	FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
 }
 void ASplendorGameState::BeginPlay()
 {
@@ -21,10 +24,12 @@ void ASplendorGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > 
 }
 void  ASplendorGameState::OnRep_CurrentState()
 {
-
+	if (CurrentState != ECurrentGameState::EGameOver) return;
+	GameFinalizer();
 }
 void ASplendorGameState::RandomizeTurnOrder()
 {
+	FGenericPlatformMath::SRandInit(FDateTime::Now().ToUnixTimestamp());
 	if (Role != ROLE_Authority) return;
 	for (uint32 i = PlayerArray.Num() - 1; i > 0; i--)
 	{
@@ -53,14 +58,35 @@ void ASplendorGameState::NextTurn()
 {
 
 	if (Role != ROLE_Authority) return;
-	if(CurrentState == ECurrentGameState::EPlaying || ECurrentGameState::ELastTurn)
+	FinalizeTurn();
+	if(CurrentState == ECurrentGameState::EPlaying )
 	{ 
+		if (playerTurnOrder[currentPlayer]->GetPlayerPrestige() >= 15)
+		{
+			bLastTurn = true;
+			playerTurnOrder[currentPlayer]->SetFinished();
+		}
+		else if (bLastTurn)
+		{
+			playerTurnOrder[currentPlayer]->SetFinished();
+		}
 		playerTurnOrder[currentPlayer]->SetTurnStatus(false);
+
 		currentPlayer++;
+
 		if (currentPlayer >= playerTurnOrder.Num()) currentPlayer = 0;
+		if (playerTurnOrder[currentPlayer]->GetFinishedStatus())
+		{
+			// Player is already finished after getting 15+ prestige
+			// Now game should finish
+			CurrentState = ECurrentGameState::EGameOver;
+			if (Role = ROLE_Authority) this->OnRep_CurrentState();
+			return;
+		}
 		playerTurnOrder[currentPlayer]->SetTurnStatus(true);
 		UE_LOG(LogTemp, Warning, TEXT("Next Turn current player %d"),currentPlayer);
 	}
+
 }
 void ASplendorGameState::Initialize()
 {
@@ -86,4 +112,26 @@ void ASplendorGameState::ServerInitialize_Implementation()
 bool ASplendorGameState::ServerInitialize_Validate()
 {
 	return true;
+}
+void ASplendorGameState::GameFinalizer_Implementation()
+{
+	UE_LOG(LogTemp, Error, TEXT("GRA SKONCZONA"))
+}
+void ASplendorGameState::FinalizeTurn()
+{
+	AInzynierkaSplendorGameModeBase* gamemodeRef = Cast<AInzynierkaSplendorGameModeBase>(this->AuthorityGameMode);
+	if (!gamemodeRef)
+	{
+		
+		UE_LOG(LogTemp, Error, TEXT("FINALIZE TURN :: NULLPTR"))
+		return;
+	}
+	FTokenStruct comparedBonuses = playerTurnOrder[currentPlayer]->GetPlayerBonuses();
+	for (int i = 0; i < 4; i++)
+	{
+		if (gamemodeRef->aristocratRequirements[i] <= comparedBonuses)
+		{
+			gamemodeRef->BuyAristocrat(i);
+		}
+	}
 }

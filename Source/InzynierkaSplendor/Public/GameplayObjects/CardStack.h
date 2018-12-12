@@ -26,12 +26,15 @@ class INZYNIERKASPLENDOR_API ACardStack : public AInteractable
 private:
 	UPROPERTY(EditAnywhere,Replicated)
 	TArray<FCardStruct> storedCards;
+	// Kept in case of reinitialization
+	TArray<FCardStruct> copyOfStoredCards;
 	UPROPERTY(EditAnywhere)
 	ATokenStash* tokenStashRef;
 	void ShuffleCards();
 	void AddGold(ASplendorPlayerController *requestingPlayer);
 	void ReserveCard(ASplendorPlayerController *requestingPlayer);
 public:
+	ACardStack();
 	UPROPERTY(BlueprintAssignable)
 		FOnCardStackRequest OnCardStackRequest;
 	UPROPERTY(BlueprintAssignable)
@@ -44,6 +47,9 @@ public:
 	/*
 	Called when client pops a reserved card from stack.
 	*/
+	int GetCardStackCount();
+	int GetInitialCardStackCount();
+	void RequestReset();
 	void PopCardArray();
 	UFUNCTION(Server, reliable,WithValidation)
 	void ServerPopCardArray();

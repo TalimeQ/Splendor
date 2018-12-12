@@ -34,7 +34,7 @@ void APlayerPawn::Tick(float DeltaTime)
 void APlayerPawn::ChangePosition(FVector newLocationVector)
 {
 	
-	//AddActorWorldOffset(newLocationVector * cameraSpeed);
+	AddActorWorldOffset(newLocationVector * cameraSpeed);
 }
 void APlayerPawn::SetupCamera()
 {
@@ -43,7 +43,7 @@ void APlayerPawn::SetupCamera()
 	cameraOffset = CreateDefaultSubobject<USpringArmComponent>(TEXT("Camera Spring Arm"));
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Player Camera"));
 	cameraOffset->SetupAttachment(RootComponent);
-	cameraOffset->SetRelativeLocationAndRotation(FVector(0, 0, 0), FRotator(-50,0, 0));
+	cameraOffset->SetRelativeLocationAndRotation(FVector(0, 0, 0), FRotator(-75,0, 0));
 
 	cameraOffset->TargetArmLength = 500.0f;
 	cameraOffset->bEnableCameraLag = true;

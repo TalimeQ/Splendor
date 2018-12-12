@@ -67,7 +67,17 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 
 		return *this;
 	}
+	FTokenStruct operator -()
+	{
+		this->diamondTokens = -this->diamondTokens;
+		this->emeraldTokens = -this->emeraldTokens;
+		this->onyxTokens = -this->onyxTokens;
+		this->goldTokens = -this->goldTokens;
+		this->sapphireTokens = -this->sapphireTokens;
+		this->rubyTokens = -this->rubyTokens;
 
+		return *this;
+	}
 	FTokenStruct operator -(FTokenStruct &deducted)
 	{
 		this->diamondTokens = this->diamondTokens - deducted.diamondTokens;
@@ -153,7 +163,7 @@ USTRUCT(BlueprintType) struct FTokenStruct {
 	}
 	int Count()
 	{
-		int tokensTotal = emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
+	    tokensTotal = emeraldTokens + rubyTokens + onyxTokens + sapphireTokens + diamondTokens + goldTokens;
 		return tokensTotal;
 	}
 	void NormalizeCost()

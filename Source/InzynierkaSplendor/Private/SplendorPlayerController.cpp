@@ -6,11 +6,11 @@
 #include "Public/Player/SplendorPlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/GameplayObjects/TokenStash.h"
-#include "Public/GameplayObjects/CardStruct.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "InzynierkaSplendorGameModeBase.h"
 #include "Runtime/Engine/Classes/Components/InputComponent.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
+#include "Public/GameplayObjects/Card.h"
 
 
 void ASplendorPlayerController::BeginPlay()
@@ -25,10 +25,9 @@ void ASplendorPlayerController::BeginPlay()
 void ASplendorPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (!playerPawnRef) return;
-	MovePawn();
-
-
+//if (!playerPawnRef) return;
+//	MovePawn();
+//	GetCameraPanDirection();
 }
 
 
@@ -52,9 +51,10 @@ void ASplendorPlayerController::SetupInputComponent()
 	InputEnabled();
 	bIsInputEnabled = true;
 }
-void ASplendorPlayerController::MovePawn()
+void ASplendorPlayerController::MovePawn(FVector cameraDirVector)
 {
-	FVector cameraDirVector = GetCameraPanDirection();
+	//FVector cameraDirVector = GetCameraPanDirection();
+
 	if (cameraDirVector == FVector(0, 0, 0)) return;
 	playerPawnRef->ChangePosition(cameraDirVector);
 
@@ -65,8 +65,10 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 	float mouseY;
 	float CameraDirX = 0;
 	float CameraDirY = 0;
-
+	
 	GetMousePosition(mouseX, mouseY);
+	UE_LOG(LogTemp, Warning, TEXT("Positions %f, %f"),mouseX,mouseY);
+	
 	if (mouseX <= margin)
 	{
 		CameraDirY = -1;
@@ -83,11 +85,12 @@ FVector  ASplendorPlayerController::GetCameraPanDirection()
 	{
 		CameraDirX = -1;
 	}
+
 	return  FVector(CameraDirX, CameraDirY, 0);
 }
 void ASplendorPlayerController::OnLeftClick()
 {
-	if (!Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) return;
+	if (!Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus() || Cast<ASplendorPlayerState>(this->PlayerState)->GetFinishedStatus()) return;
 	StartRaycasting();
 }
 void ASplendorPlayerController::OnRightClick()
@@ -108,6 +111,7 @@ void ASplendorPlayerController::ToggleInput()
 	{
 		this->EnableInput(this);
 		bIsInputEnabled = true;
+		
 	}
 	
 	
@@ -159,7 +163,7 @@ bool ASplendorPlayerController::CheckBudget(FTokenStruct comparedAmount)
 	// Note to self, atm cards are initialized as empty. This is not a bug, but a kinda struct protection, well at least its not NULLPTR
 	return comparedAmount <= playerBudget;
 }
-void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost, int prestige, bool bIsWithGold)
+void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost, int prestige, bool bIsWithGold, ATokenStash* tokenStashRef)
 {
 	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
 	if (!playerState) return;
@@ -168,7 +172,7 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 
 	FTokenStruct playerBonuses = playerState->GetPlayerBonuses();
 	FTokenStruct playerBudget = playerState->GetPlayerTokens();
-
+	FTokenStruct initialBudget = playerBudget;
 	cost - playerBonuses;
 	cost.NormalizeCost();
 	playerBudget - cost;
@@ -177,11 +181,16 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 	{
 		playerBudget.DeductGold(playerBudget);
 	}
-
+	// Po odjeciu od startowego budzetu nowego budzetu otrzymujemy ilosc tokenow ktore gracz wydal
+	initialBudget - playerBudget;
+	// Update stasha o wartosci od gracza
+	CallTokenStashUpdate( tokenStashRef,-initialBudget);
+	
 	playerState->SetPlayerTokens(playerBudget);
 	FTokenStruct oldBonus = playerState->GetPlayerBonuses();
 	FTokenStruct newBonus = oldBonus + cardBonus;
 	playerState->SetPlayerBonus(newBonus);
+	
 	// Jesli w tym momecie mielismy ture, to ja informujemy serwer ze chcemy ja zakonczyc
 	if (Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) this->CallTurnEnd();
 }
@@ -265,4 +274,48 @@ void ASplendorPlayerController::ServerRequestsCardPop_Implementation(ACardStack*
 bool ASplendorPlayerController::ServerRequestsCardPop_Validate(ACardStack* cardStackToPop)
 {
 	return true;
+}
+
+void  ASplendorPlayerController::CallUpdateCard(ACard* cardToCall)
+{
+	if (Role == ROLE_Authority)
+	{
+		cardToCall->UpdateCard();
+	}
+	else
+	{
+		ServerUpdateCard(cardToCall);
+	}
+}
+void ASplendorPlayerController::ServerUpdateCard_Implementation(ACard* cardToCall)
+{
+	CallUpdateCard(cardToCall);
+}
+bool ASplendorPlayerController::ServerUpdateCard_Validate(ACard* cardToCall)
+{
+	return true;
+}
+void ASplendorPlayerController::CallInitCard(ACard* cardToCall)
+{
+	if (Role == ROLE_Authority)
+	{
+		FCardStruct cardParams = cardToCall->GetCardParams();
+		this->SetCardParamsOnClient(cardToCall,cardParams);
+	}
+	else
+	{
+		ServerInitCard(cardToCall);
+	}
+} 
+void ASplendorPlayerController::ServerInitCard_Implementation(ACard* cardToCall)
+{
+	CallInitCard(cardToCall);
+}
+bool ASplendorPlayerController::ServerInitCard_Validate(ACard* cardToCall)
+{
+	return true;
+}
+void ASplendorPlayerController::SetCardParamsOnClient_Implementation(ACard* cardToCall, FCardStruct cardParams)
+{
+	cardToCall->ResetCardParams(cardParams);
 }

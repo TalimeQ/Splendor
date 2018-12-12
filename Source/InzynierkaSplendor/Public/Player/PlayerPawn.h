@@ -19,6 +19,7 @@ class INZYNIERKASPLENDOR_API APlayerPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	APlayerPawn();
+	UFUNCTION(BlueprintCallable)
 	void ChangePosition(FVector newLocationVector);
 	void RestartPos();
 protected:
@@ -28,6 +29,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintCallable)
 	void InitializeRaycast(FVector mousePos, FVector mouseDir);
 
 private:
@@ -37,7 +39,7 @@ private:
 	USpringArmComponent* cameraOffset = nullptr;
 	APlayerController* playerController = nullptr;
 	URaycastHandler* raycastHandler = nullptr;
-	
+
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 		float cameraSpeed = 5.0f;
 

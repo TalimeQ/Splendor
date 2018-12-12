@@ -11,9 +11,9 @@ enum ECurrentGameState
 {
 	EPlaying,
 
-	ELastTurn,
+
 	EGameOver,
-	EWon,
+
 	EUnknown
 };
 class ASplendorPlayerState;
@@ -36,7 +36,8 @@ private:
 		void RandomizeTurnOrder();
 		void InitializePlayerArray();
 		int currentPlayer = 0;
-		
+		bool bLastTurn = false;
+		void FinalizeTurn();
 public:
 		ASplendorGameState();
 		UPROPERTY(Replicated, BlueprintReadWrite, Category = "Game Variables")
@@ -49,4 +50,8 @@ public:
 		void Initialize();
 		UFUNCTION(reliable, server, WithValidation)
 		void ServerInitialize();
+
+		UFUNCTION(BlueprintNativeEvent)
+		void GameFinalizer();
+		virtual void GameFinalizer_Implementation();
 };

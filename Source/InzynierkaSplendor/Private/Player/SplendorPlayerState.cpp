@@ -56,6 +56,10 @@ void ASplendorPlayerState::SetPlayerPrestige(int newPrestige)
 	{
 		prestige = newPrestige;
 	}
+	else
+	{
+		ServerSetPlayerPrestige(newPrestige);
+	}
 }
 int ASplendorPlayerState::GetPlayerPrestige()
 {
@@ -85,6 +89,7 @@ void  ASplendorPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ASplendorPlayerState,bIsTurn);
 	DOREPLIFETIME(ASplendorPlayerState,prestige);
+	DOREPLIFETIME(ASplendorPlayerState,bIsFinished);
 }
 void  ASplendorPlayerState::SetTurnStatus(bool bNewTurnStatus)
 {
@@ -127,4 +132,20 @@ void ASplendorPlayerState::UserChat_Implementation(const FSChatMsg& newmessage)
 				MyHud->MyUIWidget->AddMessage(newmessage); // place the chat message on this player controller
 		}
 	}
+}
+void ASplendorPlayerState::ServerSetPlayerPrestige_Implementation(int newPrestige)
+{
+	this->SetPlayerPrestige(newPrestige);
+}
+bool ASplendorPlayerState::ServerSetPlayerPrestige_Validate(int newPrestige)
+{
+	return true;
+}
+void ASplendorPlayerState::SetFinished()
+{
+	bIsFinished = true;
+}
+bool ASplendorPlayerState::GetFinishedStatus()
+{
+	return bIsFinished;
 }
