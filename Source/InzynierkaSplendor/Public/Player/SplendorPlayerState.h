@@ -9,10 +9,11 @@ add references to cards that have been bought ;)
 */
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/ChatHUD.h"
 #include "SplendorPlayerState.generated.h"
 
-struct FTokenStruct;
+
 struct FCardStruct;
 class ASplendorPlayerController;
 /**
@@ -45,8 +46,11 @@ public:
 	void ReserveCard(FCardStruct cardValues);
 	void BuyReservedCard(int cardIndex);
 	void SetPlayerBonus(FTokenStruct newBonus);
+	UFUNCTION(BlueprintPure)
 	FTokenStruct GetPlayerBudget();
+	UFUNCTION(BlueprintPure)
 	FTokenStruct GetPlayerBonuses();
+	UFUNCTION(BlueprintPure)
 	int GetPlayerPrestige();
 	void SetPlayerPrestige(int newPrestige);
 	void SetTurnStatus(bool bNewTurnStatus);

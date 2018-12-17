@@ -1,11 +1,10 @@
 
 
 #include "SplendorPlayerState.h"
-#include "Public/GameplayObjects/TokenStruct.h"
 #include "Public/SplendorPlayerController.h"
+#include "Public/GameplayObjects/TokenStash.h"
 #include "UnrealNetwork.h"
 #include "Public/GameplayObjects/CardStack.h"
-#include "Public/GameplayObjects/TokenStash.h"
 #include "Public/ChatHUD.h"
 #include "Public/SMyChatWidget.h"
 
