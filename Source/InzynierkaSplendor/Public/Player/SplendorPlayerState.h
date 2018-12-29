@@ -26,10 +26,10 @@ class INZYNIERKASPLENDOR_API ASplendorPlayerState : public APlayerState
 private:
 		//UPROPERTY(Replicated)
 		TArray<FCardStruct*>  reservedCards;
-		//UPROPERTY(Replicated) TODO :replication maybe
-		FTokenStruct *playerTokens = nullptr;
-		//UPROPERTY(Replicated) TODO :replication maybe
-		FTokenStruct *playerBonuses = nullptr;
+		UPROPERTY(Replicated,VisibleAnywhere)
+		FTokenStruct playerTokens;
+		UPROPERTY(Replicated,VisibleAnywhere)
+		FTokenStruct playerBonuses;
 		UPROPERTY(Replicated)
 		int prestige;
 		UPROPERTY(Replicated)
@@ -58,6 +58,11 @@ public:
 	bool GetTurnStatus();
 	void SetFinished();
 	bool GetFinishedStatus();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerSetTokens(FTokenStruct newTokenValue);
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerSetBonus(FTokenStruct newTokenValue);
 
 	UFUNCTION(Server, Reliable, WithValidation) // for player to player rpc you need to first call the message on the server
 		virtual void UserChatRPC(const FSChatMsg& newmessage); // first rpc for the server

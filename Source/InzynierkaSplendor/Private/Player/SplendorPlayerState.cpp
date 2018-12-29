@@ -11,22 +11,26 @@
 
 ASplendorPlayerState::ASplendorPlayerState()
 {
-	playerTokens = new FTokenStruct();
-	playerBonuses = new FTokenStruct();
+	playerTokens =  FTokenStruct();
+	playerBonuses = FTokenStruct();
 }
 FTokenStruct ASplendorPlayerState::GetPlayerTokens()
 {
 
-	return *playerTokens;
+	return playerTokens;
 }
 /*
 Sets the amount of player tokens to the one provided in function parameter. Yes that means do calculations out of this place :)
 */
 void ASplendorPlayerState::SetPlayerTokens(FTokenStruct newTokenValue)
 {
-	if(ROLE_Authority){
-	playerTokens->setParams(newTokenValue);
-	UE_LOG(LogTemp, Warning, TEXT("NEW PLAYER TOKEN STATE D: %d , E: %d, S: %d, O: %d, R: %d "), playerTokens->diamondTokens, playerTokens->emeraldTokens,playerTokens->sapphireTokens, playerTokens->onyxTokens, playerTokens->rubyTokens)
+	if (Role == ROLE_Authority)
+	{
+		playerTokens.setParams(newTokenValue);
+	}
+	else
+	{
+		ServerSetTokens(newTokenValue);
 	}
 }
 int ASplendorPlayerState::ReturnNumberOfCards()
@@ -66,29 +70,35 @@ int ASplendorPlayerState::GetPlayerPrestige()
 }
 FTokenStruct ASplendorPlayerState::GetPlayerBonuses()
 {
-	return *playerBonuses;
+	return playerBonuses;
 }
 FTokenStruct ASplendorPlayerState::GetPlayerBudget()
 {
-	FTokenStruct tempBonus = *playerBonuses;
-	FTokenStruct tempTokens = *playerTokens;
+	FTokenStruct tempBonus = playerBonuses;
+	FTokenStruct tempTokens = playerTokens;
 	FTokenStruct Budget = tempBonus + tempTokens;
-	UE_LOG(LogTemp, Warning, TEXT("PLayerstate gold: %d , %d"), Budget.goldTokens,playerBonuses->goldTokens);
 	return Budget;
 }
 void ASplendorPlayerState::SetPlayerBonus(FTokenStruct newBonus)
 {
 	if (Role == ROLE_Authority)
 	{
-	playerBonuses->setParams(newBonus);
+	playerBonuses.setParams(newBonus);
 	}
-	UE_LOG(LogTemp,Warning,TEXT("NEW PLAYER BONUSES D: %d , E: %d, S: %d, O: %d, R: %d "),playerBonuses->diamondTokens,playerBonuses->emeraldTokens, playerBonuses->sapphireTokens,playerBonuses->onyxTokens, playerBonuses->rubyTokens)
+	else
+	{
+		ServerSetBonus(newBonus);
+	}
+	//UE_LOG(LogTemp,Warning,TEXT("NEW PLAYER BONUSES D: %d , E: %d, S: %d, O: %d, R: %d "),playerBonuses->diamondTokens,playerBonuses->emeraldTokens, playerBonuses->sapphireTokens,playerBonuses->onyxTokens, playerBonuses->rubyTokens)
 }
 void  ASplendorPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ASplendorPlayerState,bIsTurn);
 	DOREPLIFETIME(ASplendorPlayerState,prestige);
 	DOREPLIFETIME(ASplendorPlayerState,bIsFinished);
+	DOREPLIFETIME(ASplendorPlayerState,playerTokens);
+	DOREPLIFETIME(ASplendorPlayerState,playerBonuses);
+
 }
 void  ASplendorPlayerState::SetTurnStatus(bool bNewTurnStatus)
 {
@@ -147,4 +157,27 @@ void ASplendorPlayerState::SetFinished()
 bool ASplendorPlayerState::GetFinishedStatus()
 {
 	return bIsFinished;
+}
+
+/*
+	Networking
+*/
+
+void ASplendorPlayerState::ServerSetTokens_Implementation(FTokenStruct newTokenValue)
+{
+	UE_LOG(LogTemp, Warning, TEXT("PlayerState :: ServerSetTokens!"));
+	SetPlayerTokens(newTokenValue);
+}
+bool  ASplendorPlayerState::ServerSetTokens_Validate(FTokenStruct newTokenValue)
+{
+	return true;
+}
+void ASplendorPlayerState::ServerSetBonus_Implementation(FTokenStruct newTokenValue)
+{
+	UE_LOG(LogTemp, Warning, TEXT("PlayerState :: ServerSetBonus!"));
+	SetPlayerBonus(newTokenValue);
+}
+bool ASplendorPlayerState::ServerSetBonus_Validate(FTokenStruct newTokenValue)
+{
+	return true;
 }
