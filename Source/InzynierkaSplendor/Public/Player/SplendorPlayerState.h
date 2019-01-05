@@ -40,6 +40,7 @@ private:
 		bool bIsFinished = false;
 public:
 	ASplendorPlayerState();
+	UFUNCTION(BlueprintPure)
 	FTokenStruct GetPlayerTokens();
 	void SetPlayerTokens(FTokenStruct newTokenValue);
 	int ReturnNumberOfCards();
