@@ -10,11 +10,12 @@ add references to cards that have been bought ;)
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
+#include "Public/GameplayObjects/CardStack.h"
 #include "Public/ChatHUD.h"
 #include "SplendorPlayerState.generated.h"
 
 
-struct FCardStruct;
+
 class ASplendorPlayerController;
 /**
  * 
@@ -24,8 +25,8 @@ class INZYNIERKASPLENDOR_API ASplendorPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 private:
-		//UPROPERTY(Replicated)
-		TArray<FCardStruct*>  reservedCards;
+		UPROPERTY(Replicated)
+		TArray<FCardStruct>  reservedCards;
 		UPROPERTY(Replicated,VisibleAnywhere)
 		FTokenStruct playerTokens;
 		UPROPERTY(Replicated,VisibleAnywhere)
@@ -43,6 +44,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	FTokenStruct GetPlayerTokens();
 	void SetPlayerTokens(FTokenStruct newTokenValue);
+	UFUNCTION(BlueprintPure)
 	int ReturnNumberOfCards();
 	void ReserveCard(FCardStruct cardValues);
 	void BuyReservedCard(int cardIndex);
@@ -57,6 +59,8 @@ public:
 	void SetTurnStatus(bool bNewTurnStatus);
 	UFUNCTION(BlueprintPure)
 	bool GetTurnStatus();
+
+	
 	void SetFinished();
 	bool GetFinishedStatus();
 
@@ -64,6 +68,8 @@ public:
 		void ServerSetTokens(FTokenStruct newTokenValue);
 	UFUNCTION(Server, Reliable, WithValidation)
 		void ServerSetBonus(FTokenStruct newTokenValue);
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerReserveCard(FCardStruct cardValues);
 
 	UFUNCTION(Server, Reliable, WithValidation) // for player to player rpc you need to first call the message on the server
 		virtual void UserChatRPC(const FSChatMsg& newmessage); // first rpc for the server

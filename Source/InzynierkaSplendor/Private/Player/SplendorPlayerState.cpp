@@ -4,7 +4,7 @@
 #include "Public/SplendorPlayerController.h"
 #include "Public/GameplayObjects/TokenStash.h"
 #include "UnrealNetwork.h"
-#include "Public/GameplayObjects/CardStack.h"
+
 #include "Public/ChatHUD.h"
 #include "Public/SMyChatWidget.h"
 
@@ -41,12 +41,13 @@ void ASplendorPlayerState::ReserveCard(FCardStruct CardValues)
 {
 	if(Role == ROLE_Authority)
 	{ 
-	FCardStruct* tempCardPtr = new FCardStruct();
-	tempCardPtr->cardBonus = CardValues.cardBonus;
-	tempCardPtr->cardCost = CardValues.cardCost;
-	tempCardPtr->prestige = CardValues.prestige;
-	reservedCards.Add(tempCardPtr);
 	
+		reservedCards.Add(CardValues);
+	
+	}
+	else
+	{
+		ServerReserveCard(CardValues);
 	}
 }
 void ASplendorPlayerState::BuyReservedCard(int cardIndex)
@@ -98,7 +99,7 @@ void  ASplendorPlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty
 	DOREPLIFETIME(ASplendorPlayerState,bIsFinished);
 	DOREPLIFETIME(ASplendorPlayerState,playerTokens);
 	DOREPLIFETIME(ASplendorPlayerState,playerBonuses);
-
+	DOREPLIFETIME(ASplendorPlayerState, reservedCards);
 }
 void  ASplendorPlayerState::SetTurnStatus(bool bNewTurnStatus)
 {
@@ -178,6 +179,14 @@ void ASplendorPlayerState::ServerSetBonus_Implementation(FTokenStruct newTokenVa
 	SetPlayerBonus(newTokenValue);
 }
 bool ASplendorPlayerState::ServerSetBonus_Validate(FTokenStruct newTokenValue)
+{
+	return true;
+}
+void ASplendorPlayerState::ServerReserveCard_Implementation(FCardStruct cardValues)
+{
+	ReserveCard(cardValues);
+}
+bool ASplendorPlayerState::ServerReserveCard_Validate(FCardStruct cardValues)
 {
 	return true;
 }
