@@ -80,6 +80,10 @@ FTokenStruct ASplendorPlayerState::GetPlayerBudget()
 	FTokenStruct Budget = tempBonus + tempTokens;
 	return Budget;
 }
+TArray<FCardStruct> ASplendorPlayerState::GetReservedCards()
+{
+	return reservedCards;
+}
 void ASplendorPlayerState::SetPlayerBonus(FTokenStruct newBonus)
 {
 	if (Role == ROLE_Authority)

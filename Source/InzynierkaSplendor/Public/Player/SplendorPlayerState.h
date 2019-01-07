@@ -43,6 +43,8 @@ public:
 	ASplendorPlayerState();
 	UFUNCTION(BlueprintPure)
 	FTokenStruct GetPlayerTokens();
+	UFUNCTION(BlueprintPure)
+	TArray<FCardStruct> GetReservedCards();
 	void SetPlayerTokens(FTokenStruct newTokenValue);
 	UFUNCTION(BlueprintPure)
 	int ReturnNumberOfCards();
