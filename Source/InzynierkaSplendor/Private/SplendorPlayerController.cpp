@@ -104,8 +104,8 @@ void ASplendorPlayerController::ToggleInput()
 {
 	if(bIsInputEnabled)
 	{
-		this->DisableInput(this);
-		bIsInputEnabled = false;
+		this->EnableInput(this);
+		bIsInputEnabled = true;
 	}
 	else
 	{
@@ -190,6 +190,8 @@ void ASplendorPlayerController::BuyCard(FTokenStruct cardBonus,FTokenStruct cost
 	FTokenStruct oldBonus = playerState->GetPlayerBonuses();
 	FTokenStruct newBonus = oldBonus + cardBonus;
 	playerState->SetPlayerBonus(newBonus);
+	int playerPrestige = playerState->GetPlayerPrestige();
+	playerState->SetPlayerPrestige(prestige + playerPrestige);
 	
 	// Jesli w tym momecie mielismy ture, to ja informujemy serwer ze chcemy ja zakonczyc
 	if (Cast<ASplendorPlayerState>(this->PlayerState)->GetTurnStatus()) this->CallTurnEnd();
@@ -198,11 +200,11 @@ void ASplendorPlayerController::RestartPawn()
 {
 	playerPawnRef->RestartPos();
 }
-void  ASplendorPlayerController::ReserveCard(FCardStruct* reservedCard)
+void  ASplendorPlayerController::ReserveCard(FCardStruct* reservedCard,ATokenStash * tokenStashRef)
 {
 	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
 	if (playerState->GetTurnStatus()) this->CallTurnEnd();
-	playerState->ReserveCard(*reservedCard);
+	playerState->ReserveCard(*reservedCard, tokenStashRef);
 	
 }
 

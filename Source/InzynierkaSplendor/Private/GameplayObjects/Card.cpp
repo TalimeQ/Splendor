@@ -84,7 +84,7 @@ void ACard::Reserve(ASplendorPlayerController* playerRef)
 {
 	//ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(playerRef->PlayerState);
 	//playerState->ReserveCard(this->cardParams);
-	playerRef->ReserveCard(&(this->cardParams));
+	playerRef->ReserveCard(&(this->cardParams),tokenStashRef);
 	// TODO :: Handle card destruction handle card destruction or refill
 	playerRef->CallUpdateCard(this);
 

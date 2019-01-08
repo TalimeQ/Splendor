@@ -37,12 +37,14 @@ int ASplendorPlayerState::ReturnNumberOfCards()
 {
 	return reservedCards.Num();
 }
-void ASplendorPlayerState::ReserveCard(FCardStruct CardValues)
+void ASplendorPlayerState::ReserveCard(FCardStruct CardValues,ATokenStash* tokenstashRef)
 {
+	this->tokenStashRef = tokenstashRef;
 	if(Role == ROLE_Authority)
 	{ 
 	
 		reservedCards.Add(CardValues);
+
 	
 	}
 	else
@@ -50,9 +52,37 @@ void ASplendorPlayerState::ReserveCard(FCardStruct CardValues)
 		ServerReserveCard(CardValues);
 	}
 }
-void ASplendorPlayerState::BuyReservedCard(int cardIndex)
+void ASplendorPlayerState::BuyReservedCard(int cardIndex,bool bIsWithGold, ASplendorPlayerController* playerCont,ATokenStash* tokenStashPoint)
 {
-	//theoretical implementation soon :) after i get my game interface.....
+	if (Role == ROLE_Authority)
+	{
+		if (!tokenStashPoint) UE_LOG(LogTemp, Warning, TEXT("Cos nie pyklo"));
+		FCardStruct workStruct = reservedCards[cardIndex];
+		FTokenStruct cardCost = workStruct.cardCost;
+		FTokenStruct playerBonuses = this->GetPlayerBonuses();
+		FTokenStruct playerBudget = this->GetPlayerTokens();
+		FTokenStruct initialBudget = playerBudget;
+		cardCost - playerBonuses;
+		cardCost.NormalizeCost();
+		playerBudget - cardCost;
+		if (bIsWithGold)
+		{
+			playerBudget.DeductGold(playerBudget);
+		}
+		initialBudget - playerBudget;
+		playerCont->CallTokenStashUpdate(tokenStashPoint, -initialBudget);
+		this->SetPlayerTokens(playerBudget);
+		FTokenStruct oldBonus = this->GetPlayerBonuses();
+		FTokenStruct newBonus = oldBonus + workStruct.cardBonus;
+		this->SetPlayerBonus(newBonus);
+		this->SetPlayerPrestige(workStruct.prestige += prestige);
+		this->reservedCards.RemoveAt(cardIndex);
+	}
+	else
+	{
+		ServerBuyReservedCard(cardIndex, bIsWithGold, playerCont, tokenStashPoint);
+	}
+	
 }
 void ASplendorPlayerState::SetPlayerPrestige(int newPrestige)
 {
@@ -188,9 +218,17 @@ bool ASplendorPlayerState::ServerSetBonus_Validate(FTokenStruct newTokenValue)
 }
 void ASplendorPlayerState::ServerReserveCard_Implementation(FCardStruct cardValues)
 {
-	ReserveCard(cardValues);
+	ReserveCard(cardValues,tokenStashRef);
 }
 bool ASplendorPlayerState::ServerReserveCard_Validate(FCardStruct cardValues)
+{
+	return true;
+}
+void ASplendorPlayerState::ServerBuyReservedCard_Implementation(int cardIndex, bool bIsWithGold, ASplendorPlayerController* playerCont,ATokenStash* tokenStashPoint)
+{
+	BuyReservedCard(cardIndex,bIsWithGold,playerCont,tokenStashPoint);
+}
+bool ASplendorPlayerState::ServerBuyReservedCard_Validate(int cardIndex, bool bIsWithGold, ASplendorPlayerController* playerCont, ATokenStash* tokenStashPoint)
 {
 	return true;
 }

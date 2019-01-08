@@ -88,7 +88,7 @@ void ACardStack::ReserveCard(ASplendorPlayerController *requestingPlayer)
 {
 	// We will ask server to pop it with removal instead 
 	FCardStruct cardToReserve = storedCards.Pop(false);
-	requestingPlayer->ReserveCard(&cardToReserve);
+	requestingPlayer->ReserveCard(&cardToReserve,tokenStashRef);
 	requestingPlayer->CallRequestCardPop(this);
 
 }

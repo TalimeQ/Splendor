@@ -61,7 +61,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool CheckIfCanReserve();
 	bool CheckBudget(FTokenStruct comparedAmount);
-	void ReserveCard(FCardStruct* reservedCard);
+	void ReserveCard(FCardStruct* reservedCard,ATokenStash * tokenStashRef);
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold, ATokenStash* tokenStashRef);
 
 	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);

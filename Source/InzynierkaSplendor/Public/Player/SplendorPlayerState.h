@@ -10,6 +10,7 @@ add references to cards that have been bought ;)
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
 #include "Public/GameplayObjects/TokenStruct.h"
+#include "Public/GameplayObjects/TokenStash.h"
 #include "Public/GameplayObjects/CardStack.h"
 #include "Public/ChatHUD.h"
 #include "SplendorPlayerState.generated.h"
@@ -39,6 +40,9 @@ private:
 		void ServerSetPlayerPrestige(int newPrestige);
 		UPROPERTY(Replicated)
 		bool bIsFinished = false;
+protected:
+	UPROPERTY(BlueprintReadOnly)
+		ATokenStash* tokenStashRef = nullptr;
 public:
 	ASplendorPlayerState();
 	UFUNCTION(BlueprintPure)
@@ -48,8 +52,9 @@ public:
 	void SetPlayerTokens(FTokenStruct newTokenValue);
 	UFUNCTION(BlueprintPure)
 	int ReturnNumberOfCards();
-	void ReserveCard(FCardStruct cardValues);
-	void BuyReservedCard(int cardIndex);
+	void ReserveCard(FCardStruct cardValues,ATokenStash* tokenStashRef);
+	UFUNCTION(BlueprintCallable)
+	void BuyReservedCard(int cardIndex, bool bIsWithGold, ASplendorPlayerController* playerCont, ATokenStash* tokenStashPoint);
 	void SetPlayerBonus(FTokenStruct newBonus);
 	UFUNCTION(BlueprintPure)
 	FTokenStruct GetPlayerBudget();
@@ -72,6 +77,8 @@ public:
 		void ServerSetBonus(FTokenStruct newTokenValue);
 	UFUNCTION(Server, Reliable, WithValidation)
 		void ServerReserveCard(FCardStruct cardValues);
+	UFUNCTION(Server, Reliable, WithValidation)
+		void ServerBuyReservedCard(int cardIndex, bool bIsWithGold, ASplendorPlayerController* playerCont, ATokenStash* tokenStashPoint);
 
 	UFUNCTION(Server, Reliable, WithValidation) // for player to player rpc you need to first call the message on the server
 		virtual void UserChatRPC(const FSChatMsg& newmessage); // first rpc for the server
