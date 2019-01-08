@@ -77,6 +77,7 @@ void ASplendorPlayerState::BuyReservedCard(int cardIndex,bool bIsWithGold, ASple
 		this->SetPlayerBonus(newBonus);
 		this->SetPlayerPrestige(workStruct.prestige += prestige);
 		this->reservedCards.RemoveAt(cardIndex);
+		playerCont->CallTurnEnd();
 	}
 	else
 	{
