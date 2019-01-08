@@ -102,10 +102,10 @@ void ASplendorPlayerController::OnRightClick()
 }
 void ASplendorPlayerController::ToggleInput()
 {
-	if(bIsInputEnabled)
+	if(this->InputEnabled())
 	{
-		this->EnableInput(this);
-		bIsInputEnabled = true;
+		this->DisableInput(this);
+		bIsInputEnabled = false;
 	}
 	else
 	{
