@@ -65,6 +65,7 @@ public:
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold, ATokenStash* tokenStashRef);
 
 	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
+	UFUNCTION(BlueprintCallable)
 	void CallTurnEnd();
 	void CallRequestCardPop(ACardStack* cardStackToPop);
 	void CallUpdateCard(ACard* cardToCall);
