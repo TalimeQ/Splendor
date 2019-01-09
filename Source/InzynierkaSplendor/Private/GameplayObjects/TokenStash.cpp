@@ -85,7 +85,7 @@ void ATokenStash::ProcessTokenRequest(TArray<int> requestedTokens, ASplendorPlay
 		return;
 	}
 	playerContRef->CallTokenStashUpdate(this, tokensBeingTaken);
-	playerContRef->AddTokens(tokensBeingTaken);
+	playerContRef->AddTokens(tokensBeingTaken,this);
 		
 
 }

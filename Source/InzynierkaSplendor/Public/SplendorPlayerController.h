@@ -57,13 +57,14 @@ public:
 	void ToggleInput();
 	UFUNCTION(BlueprintCallable)
 	void ForceInput();
-	void AddTokens(FTokenStruct tokensToAdd);
+	void AddTokens(FTokenStruct tokensToAdd,ATokenStash* TokenStashReference);
 	UFUNCTION(BlueprintCallable)
 	bool CheckIfCanReserve();
 	bool CheckBudget(FTokenStruct comparedAmount);
 	void ReserveCard(FCardStruct* reservedCard,ATokenStash * tokenStashRef);
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold, ATokenStash* tokenStashRef);
 
+	UFUNCTION(BlueprintCallable)
 	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
 	UFUNCTION(BlueprintCallable)
 	void CallTurnEnd();

@@ -54,4 +54,6 @@ public:
 		UFUNCTION(BlueprintNativeEvent)
 		void GameFinalizer();
 		virtual void GameFinalizer_Implementation();
+
+
 };

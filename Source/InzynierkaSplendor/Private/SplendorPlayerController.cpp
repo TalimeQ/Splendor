@@ -116,7 +116,7 @@ void ASplendorPlayerController::ToggleInput()
 	
 	
 }
-void ASplendorPlayerController::AddTokens(FTokenStruct tokensToAdd)
+void ASplendorPlayerController::AddTokens(FTokenStruct tokensToAdd,ATokenStash* TokenStashReference)
 {
 	ASplendorPlayerState* playerStateRef = Cast<ASplendorPlayerState>( this->PlayerState);
 	if (playerStateRef)
@@ -124,9 +124,7 @@ void ASplendorPlayerController::AddTokens(FTokenStruct tokensToAdd)
 		FTokenStruct playerOwnedTokens = playerStateRef->GetPlayerTokens();
 		playerOwnedTokens + tokensToAdd;
 		playerStateRef->SetPlayerTokens(playerOwnedTokens);
-		// This is just for debug purposes :) TODO :: When the interface will be implemented, remove this.
-		playerOwnedTokens = playerStateRef->GetPlayerTokens();
-		UE_LOG(LogTemp, Warning, TEXT("Final player Token State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), playerOwnedTokens.rubyTokens, playerOwnedTokens.diamondTokens, playerOwnedTokens.emeraldTokens, playerOwnedTokens.sapphireTokens, playerOwnedTokens.onyxTokens)
+		playerStateRef->SetTokenStahsRef(TokenStashReference);
 		// Zabezpiecza przed podwojnym requestem zmiany tury.
 		if (tokensToAdd.goldTokens >= 1) return;
 		// Jesli w tym momecie mielismy ture, to ja informujemy serwer ze chcemy ja zakonczyc
@@ -146,6 +144,7 @@ void ASplendorPlayerController::StartRaycasting()
 bool ASplendorPlayerController::CheckIfCanReserve()
 {
 	ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(this->PlayerState);
+	
 	if (!playerState) return false;
 	if (playerState->ReturnNumberOfCards() >= 3) return false;
 	else return true;
@@ -220,7 +219,13 @@ void ASplendorPlayerController::CallTokenStashUpdate(ATokenStash * tokenStash, F
 
 	if (Role == ROLE_Authority)
 	{
-	
+		if (!tokenStash)
+		{
+			
+			UE_LOG(LogTemp, Warning, TEXT("Server call pointer null"));
+			return;
+		}
+
 		tokenStash->SetTokenAmount(tokenAmount);
 	}
 	else 
@@ -232,6 +237,7 @@ void ASplendorPlayerController::CallTokenStashUpdate(ATokenStash * tokenStash, F
 }
 void  ASplendorPlayerController::ServerCallTokenStashUpdate_Implementation(ATokenStash * tokenStash, FTokenStruct tokenAmount)
 {
+
 	CallTokenStashUpdate(tokenStash, tokenAmount);
 	
 }

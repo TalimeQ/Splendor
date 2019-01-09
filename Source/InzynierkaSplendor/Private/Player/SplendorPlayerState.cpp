@@ -178,6 +178,8 @@ void ASplendorPlayerState::UserChat_Implementation(const FSChatMsg& newmessage)
 		}
 	}
 }
+
+
 void ASplendorPlayerState::ServerSetPlayerPrestige_Implementation(int newPrestige)
 {
 	this->SetPlayerPrestige(newPrestige);
@@ -193,6 +195,10 @@ void ASplendorPlayerState::SetFinished()
 bool ASplendorPlayerState::GetFinishedStatus()
 {
 	return bIsFinished;
+}
+void  ASplendorPlayerState::SetTokenStahsRef(ATokenStash* tokenStashReference)
+{
+	this->tokenStashRef = tokenStashReference;
 }
 
 /*
