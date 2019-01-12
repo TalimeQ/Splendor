@@ -54,6 +54,14 @@ private:
 
 public:
 	UFUNCTION(BlueprintCallable)
+		void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
+	UFUNCTION(BlueprintCallable)
+		void CallTurnEnd();
+	void CallRequestCardPop(ACardStack* cardStackToPop);
+	void CallUpdateCard(ACard* cardToCall);
+	void CallInitCard(ACard* cardToCall);
+
+	UFUNCTION(BlueprintCallable)
 	void ToggleInput();
 	UFUNCTION(BlueprintCallable)
 	void ForceInput();
@@ -64,13 +72,7 @@ public:
 	void ReserveCard(FCardStruct* reservedCard,ATokenStash * tokenStashRef);
 	void BuyCard(FTokenStruct cardBonus, FTokenStruct cost, int prestige, bool bIsWithGold, ATokenStash* tokenStashRef);
 
-	UFUNCTION(BlueprintCallable)
-	void CallTokenStashUpdate(ATokenStash * tokenStash, FTokenStruct tokenAmount);
-	UFUNCTION(BlueprintCallable)
-	void CallTurnEnd();
-	void CallRequestCardPop(ACardStack* cardStackToPop);
-	void CallUpdateCard(ACard* cardToCall);
-	void CallInitCard(ACard* cardToCall);
+
 
 protected:
 	virtual void SetupInputComponent() override;

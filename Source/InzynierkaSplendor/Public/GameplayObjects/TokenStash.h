@@ -48,7 +48,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetTokenAmount(FTokenStruct deductedTokenAmount);
-	// privatize it?
 	UFUNCTION(reliable, server, WithValidation)
 	void ServerSetTokenAmount(FTokenStruct deductedTokenAmount);
 

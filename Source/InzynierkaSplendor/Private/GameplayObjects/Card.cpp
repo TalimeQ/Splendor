@@ -47,13 +47,11 @@ void ACard::CardBuy(ASplendorPlayerController* buyingPlayer)
 	}
 	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, false, tokenStashRef);
 	buyingPlayer->CallUpdateCard(this);
-	// TODO :: Handle card destruction handle card destruction or refill
 }
 void ACard::GoldCardBuy(ASplendorPlayerController* buyingPlayer)
 {
 	buyingPlayer->BuyCard(this->cardParams.cardBonus, this->cardParams.cardCost, this->cardParams.prestige, true, tokenStashRef);
 	buyingPlayer->CallUpdateCard(this);
-	// TODO :: Handle card destruction handle card destruction or refill
 }
 bool ACard::CheckIfBuyableWithGold(ASplendorPlayerController* playerRef)
 {
@@ -68,8 +66,6 @@ bool ACard::IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRe
 	playerBudget.goldTokens = 0;
     cost - playerBudget;
 	cost.Count();
-	UE_LOG(LogTemp, Warning, TEXT("Final player Token State ::  Rubies: %d , Diamonds: %d , Emeralds: %d , Sapphires: %d , Onyxes : %d "), cost.rubyTokens, cost.diamondTokens, cost.emeraldTokens, cost.sapphireTokens, cost.onyxTokens)
-	UE_LOG(LogTemp, Warning, TEXT("%d"), cost.tokensTotal);
 	if (cost.tokensTotal <= tempGoldStorage)
 	{
 	
@@ -82,10 +78,9 @@ bool ACard::IsOneGoldAway(FTokenStruct cost, ASplendorPlayerController* playerRe
 }
 void ACard::Reserve(ASplendorPlayerController* playerRef)
 {
-	//ASplendorPlayerState* playerState = Cast<ASplendorPlayerState>(playerRef->PlayerState);
-	//playerState->ReserveCard(this->cardParams);
+
 	playerRef->ReserveCard(&(this->cardParams),tokenStashRef);
-	// TODO :: Handle card destruction handle card destruction or refill
+	
 	playerRef->CallUpdateCard(this);
 
 }
@@ -95,7 +90,7 @@ void  ACard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetim
 }
 void ACard::OnRep_VisualizeCard()
 {
-	UE_LOG(LogTemp, Warning, TEXT("REPLICATING"));
+
 	VisualizeCard();
 	
 }

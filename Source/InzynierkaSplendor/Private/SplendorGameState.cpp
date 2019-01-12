@@ -67,7 +67,7 @@ void ASplendorGameState::NextTurn()
 			playerTurnOrder[currentPlayer]->SetFinished();
 		}
 		else if (bLastTurn)
-		{
+		{	
 			playerTurnOrder[currentPlayer]->SetFinished();
 		}
 		playerTurnOrder[currentPlayer]->SetTurnStatus(false);
@@ -128,7 +128,6 @@ void ASplendorGameState::FinalizeTurn()
 	}
 	FTokenStruct comparedBonuses = playerTurnOrder[currentPlayer]->GetPlayerBonuses();
 
-	int playerNumberOfTokens = playerTurnOrder[currentPlayer]->GetPlayerTokens().Count();
 	for (int i = 0; i < 4; i++)
 	{
 		if (gamemodeRef->aristocratRequirements[i] <= comparedBonuses)
